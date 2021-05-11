@@ -1,4 +1,5 @@
 using ActivityPlanner2.Client.ClientServices;
+using Blazor.Extensions.Logging;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -28,6 +29,14 @@ namespace ActivityPlanner2.Client
             builder.Services.AddScoped<IHttpService, HttpService>();
 
             builder.Services.AddApiAuthorization();
+
+            builder.Services.AddLogging(builder =>
+            {
+                builder.AddBrowserConsole().SetMinimumLevel(LogLevel.Trace);
+                builder.AddFilter("System.Net.Http", LogLevel.Information);
+                builder.AddFilter("Microsoft.AspNetCore.Components.WebAssembly.Authentication", LogLevel.Information);
+                builder.AddFilter("Microsoft.AspNetCore.Components.WebAssembly.Hosting", LogLevel.Information);
+            });
 
             await builder.Build().RunAsync();
         }
