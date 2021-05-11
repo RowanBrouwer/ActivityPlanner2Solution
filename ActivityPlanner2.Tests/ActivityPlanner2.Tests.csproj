@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ActivityPlanner2.Data\ActivityPlanner2.Data.csproj" />
+    <ProjectReference Include="..\ActivityPlanner2\Server\ActivityPlanner2.Server.csproj" />
     <ProjectReference Include="..\ActivityPlanner2\Shared\ActivityPlanner2.Shared.csproj" />
   </ItemGroup>
 

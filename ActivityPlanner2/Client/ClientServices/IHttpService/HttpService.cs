@@ -15,9 +15,9 @@ namespace ActivityPlanner2.Client.ClientServices
             this.Http = Http;
         }
 
-        Task<List<Person>> GetListOfPeople()
-        {
+        //Task<List<Person>> GetListOfPeople()
+        //{
             
-        }
+        //}
     }
 }

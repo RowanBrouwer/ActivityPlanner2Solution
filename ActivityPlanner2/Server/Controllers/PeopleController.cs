@@ -22,9 +22,9 @@ namespace ActivityPlanner2.Server.Controllers
 
         // GET: api/<PeopleController>
         [HttpGet]
-        public ActionResult<IEnumerable<Person>> GetListOfPeople()
+        public async Task<ActionResult<IEnumerable<Person>>> GetListOfPeople()
         {
-            var result = context.GetListOfPeople();
+            var result = await context.GetListOfPeople();
 
             if (result == null)
             {
@@ -52,7 +52,7 @@ namespace ActivityPlanner2.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<Person>> Post([FromBody] Person value)
         {
-            var check = context.GetPersonById(value.Id);
+            var check = await context.GetPersonById(value.Id);
 
             if (check != null)
             {
@@ -61,7 +61,7 @@ namespace ActivityPlanner2.Server.Controllers
 
             await context.AddPerson(value);
 
-            var result = context.GetPersonById(value.Id);
+            var result = await context.GetPersonById(value.Id);
 
             if (result == null)
             {
@@ -98,9 +98,9 @@ namespace ActivityPlanner2.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(string id)
         {
-            var check = context.GetPersonById(id);
+            var check = await context.GetPersonById(id);
 
-            if (check != null)
+            if (check == null)
             {
                 return NotFound();
             }

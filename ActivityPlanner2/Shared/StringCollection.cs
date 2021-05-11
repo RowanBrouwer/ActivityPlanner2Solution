@@ -8,9 +8,9 @@ namespace ActivityPlanner2.Shared
 {
     public static class StringCollection
     {
-        public static string BaseUri = "https://localhost:44389/";
+        public static string Base_Uri = "https://localhost:44389/";
 
-        public static string ApiUri = "api/People";
+        public static string Api_PeopleControler_Uri = "api/People";
 
         //public static string HubUri = "/visitorhub";
 
