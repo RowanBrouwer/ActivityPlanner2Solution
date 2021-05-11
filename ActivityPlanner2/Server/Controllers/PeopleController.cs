@@ -52,9 +52,9 @@ namespace ActivityPlanner2.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<Person>> Post([FromBody] Person value)
         {
-            var Check = context.GetPersonById(value.Id);
+            var check = context.GetPersonById(value.Id);
 
-            if (Check != null)
+            if (check != null)
             {
                 return Conflict();
             }
@@ -73,14 +73,41 @@ namespace ActivityPlanner2.Server.Controllers
 
         // PUT api/<PeopleController>/5
         [HttpPut("{id}")]
-        public void Put(string id, [FromBody] Person value)
+        public async Task<ActionResult<Person>> Put(string id, [FromBody] Person value)
         {
+            var check = await context.GetPersonById(id);
+
+            if (check == null)
+            {
+                return NotFound();
+            }
+
+            await context.UpdatePerson(value);
+
+            var result = await context.GetPersonById(id);
+
+            if (result == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(result);
         }
 
         // DELETE api/<PeopleController>/5
         [HttpDelete("{id}")]
-        public void Delete(string id)
+        public async Task<ActionResult> Delete(string id)
         {
+            var check = context.GetPersonById(id);
+
+            if (check != null)
+            {
+                return NotFound();
+            }
+
+            await context.DeletePerson(id);
+
+            return NoContent();    
         }
     }
 }
