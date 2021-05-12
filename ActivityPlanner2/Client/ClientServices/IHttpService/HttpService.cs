@@ -10,10 +10,12 @@ using System.Threading.Tasks;
 
 namespace ActivityPlanner2.Client.ClientServices
 { 
-    public class HttpService : IHttpService
+    public class HttpService : IHttpService, IDisposable
     {
         readonly HttpClient Http;
         ILogger<HttpService> logger;
+        private bool disposedValue;
+
         public HttpService(HttpClient Http, ILogger<HttpService> logger)
         {
             this.Http = Http;
@@ -54,6 +56,36 @@ namespace ActivityPlanner2.Client.ClientServices
             var result = await Http.PutAsJsonAsync(StringCollection.Api_PeopleControler_Uri + $"/{person.Id}", person);
 
             return result;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects)
+                    Http.Dispose();
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                disposedValue = true;
+            }
+        }
+
+        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        ~HttpService()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: false);
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }
