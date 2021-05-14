@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using ActivityPlanner2;
 
 namespace ActivityPlanner2.Client.ClientServices
 { 
@@ -14,7 +15,6 @@ namespace ActivityPlanner2.Client.ClientServices
     {
         readonly HttpClient Http;
         ILogger<HttpService> logger;
-        private bool disposedValue;
 
         public HttpService(HttpClient Http, ILogger<HttpService> logger)
         {
