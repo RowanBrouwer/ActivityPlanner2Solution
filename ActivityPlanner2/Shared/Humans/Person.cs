@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace ActivityPlanner2.Shared
 {
+    //maak DTO
     public class Person : IdentityUser
     {
         public string FirstName { get; set; }
@@ -20,7 +21,7 @@ namespace ActivityPlanner2.Shared
             $"{FirstName} {LastName}" 
             : $"{FirstName} {MiddleName} {LastName}";
 
-        public ICollection<PersonInvites> PlannedActivities() 
+        public IEnumerable<PersonInvites> PlannedActivities() 
             => Invites != null ? 
             Invites.Any() != false ? 
             Invites.Where(i => i.Accepted == true).ToList()
