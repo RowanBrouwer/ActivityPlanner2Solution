@@ -38,6 +38,8 @@ namespace ActivityPlanner2.Server
             services.AddIdentityServer()
                 .AddApiAuthorization<Person, ApplicationDbContext>();
 
+            services.AddScoped<IPersonRepository, PersonRepository>();
+
             services.AddAuthentication()
                 .AddIdentityServerJwt();
 
