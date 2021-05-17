@@ -1,4 +1,5 @@
-﻿using ActivityPlanner2.Client.ClientServices;
+﻿using ActivityPlanner2.Client.ClientModels;
+using ActivityPlanner2.Client.ClientServices;
 using ActivityPlanner2.Client.Components;
 using ActivityPlanner2.Shared;
 using Microsoft.AspNetCore.Authorization;
@@ -13,7 +14,7 @@ namespace ActivityPlanner2.Client.Pages
     [Authorize]
     public class PeopleOverviewPageModel : BasePageComponent
     {
-        public IEnumerable<Person> LoadedUsers { get; set; } = new List<Person>();
+        public IEnumerable<ClientBasePerson> LoadedUsers { get; set; } = new List<ClientBasePerson>();
         protected override async Task OnInitializedAsync()
         {
             await Task.FromResult(loadData());

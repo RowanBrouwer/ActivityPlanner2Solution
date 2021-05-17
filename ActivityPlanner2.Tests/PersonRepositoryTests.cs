@@ -1,5 +1,7 @@
 ﻿using ActivityPlanner2.Data;
+using ActivityPlanner2.Data.ServerModels;
 using ActivityPlanner2.Shared;
+using ActivityPlanner2.Shared.DTOs;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -67,7 +69,7 @@ namespace ActivityPlanner2.Tests
 
             user.MiddleName = "Test";
 
-            await context.UpdatePerson(user);
+            await context.UpdatePerson((Shared.DTOs.BasePersonDTO)user);
 
             var userAfterUpdate = await context.GetPersonById(TestPersonId1);
             var ExpectedMiddleName = "Test";
@@ -90,7 +92,7 @@ namespace ActivityPlanner2.Tests
         {
             Person newPerson = new Person { FirstName = "VeryDistinctName", LastName = "Weird" };
 
-            await context.AddPerson(newPerson);
+            await context.AddPerson((BasePersonDTO)newPerson);
 
             Person NewDbPerson = db.People.Find(newPerson.Id);
             string expectedFullname = "VeryDistinctName Weird";

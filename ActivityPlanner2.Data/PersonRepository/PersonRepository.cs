@@ -1,4 +1,6 @@
-﻿using ActivityPlanner2.Shared;
+﻿using ActivityPlanner2.Data.ServerModels;
+using ActivityPlanner2.Shared;
+using ActivityPlanner2.Shared.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +17,10 @@ namespace ActivityPlanner2.Data
             this.context = context;
         }
 
-        public async Task AddPerson(Person NewPersonToAdd)
+        public async Task AddPerson(BasePersonDTO NewPersonToAdd)
         {
-            context.People.Add(NewPersonToAdd);
+            Person newPerson = (Person)NewPersonToAdd;
+            context.People.Add(newPerson);
             await saveChanges();
         }
 
@@ -54,9 +57,20 @@ namespace ActivityPlanner2.Data
             return await context.People.FindAsync(id);
         }
 
-        public async Task UpdatePerson(Person updatedPersonData)
+        public async Task UpdatePerson(BasePersonDTO updatedPersonData)
         {
-            context.People.Update(updatedPersonData);
+            var PersonFromDb = await GetPersonById(updatedPersonData.Id);
+
+            if (PersonFromDb.FirstName != updatedPersonData.FirstName)
+                PersonFromDb.FirstName = updatedPersonData.FirstName;
+
+            if (PersonFromDb.MiddleName != updatedPersonData.MiddleName)
+                PersonFromDb.MiddleName = updatedPersonData.MiddleName;
+
+            if (PersonFromDb.LastName != updatedPersonData.LastName)
+                PersonFromDb.LastName = updatedPersonData.LastName;
+
+            context.People.Update(PersonFromDb);
 
             await saveChanges();
         }

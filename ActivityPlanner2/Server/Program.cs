@@ -1,4 +1,5 @@
 ﻿using ActivityPlanner2.Data;
+using ActivityPlanner2.Data.ServerModels;
 using ActivityPlanner2.Shared;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;

@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using ActivityPlanner2.Shared.DTOs;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ActivityPlanner2.Shared
+namespace ActivityPlanner2.Data.ServerModels
 {
     //maak DTO
     public class Person : IdentityUser
@@ -15,7 +16,6 @@ namespace ActivityPlanner2.Shared
         public string LastName { get; set; }
         public  IEnumerable<PersonOrginizedActivity> OrganizedActivities { get; set; }
         public  IEnumerable<PersonInvites> Invites { get; set; }
-
         public string FullName()
             => string.IsNullOrEmpty(MiddleName) ? 
             $"{FirstName} {LastName}" 
@@ -26,5 +26,28 @@ namespace ActivityPlanner2.Shared
             Invites.Any() != false ? 
             Invites.Where(i => i.Accepted == true).ToList()
             : null : null;
+
+
+        public static explicit operator BasePersonDTO(Person person)
+        {
+            return new()
+            {
+                Id = person.Id,
+                FirstName = person.FirstName,
+                MiddleName = person.MiddleName,
+                LastName = person.LastName,
+            };
+        }
+
+        public static explicit operator Person(BasePersonDTO person)
+        {
+            return new()
+            {
+                Id = person.Id,
+                FirstName = person.FirstName,
+                MiddleName = person.MiddleName,
+                LastName = person.LastName,
+            };
+        }
     }
 }

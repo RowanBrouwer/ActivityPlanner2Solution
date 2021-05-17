@@ -1,4 +1,6 @@
-﻿using ActivityPlanner2.Shared;
+﻿using ActivityPlanner2.Data.ServerModels;
+using ActivityPlanner2.Shared;
+using ActivityPlanner2.Shared.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +14,8 @@ namespace ActivityPlanner2.Data
         Task<Person> GetPersonById(string id);
         Task<IEnumerable<Person>> GetListOfPeople();
         Task<IEnumerable<Person>> GetListOfPeopleByName(string name);
-        Task AddPerson(Person NewPersonToAdd);
+        Task AddPerson(BasePersonDTO NewPersonToAdd);
         Task DeletePerson(string id);
-        Task UpdatePerson(Person updatedPersonData);
+        Task UpdatePerson(BasePersonDTO updatedPersonData);
     }
 }

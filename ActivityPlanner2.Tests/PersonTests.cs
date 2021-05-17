@@ -1,4 +1,5 @@
-﻿using ActivityPlanner2.Shared;
+﻿using ActivityPlanner2.Data.ServerModels;
+using ActivityPlanner2.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;

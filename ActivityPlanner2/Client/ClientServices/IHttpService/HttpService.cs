@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using ActivityPlanner2;
+using ActivityPlanner2.Client.ClientModels;
 
 namespace ActivityPlanner2.Client.ClientServices
 { 
@@ -22,25 +23,25 @@ namespace ActivityPlanner2.Client.ClientServices
             this.logger = logger;
         }
 
-        public async Task<IEnumerable<Person>> GetListOfPeople()
+        public async Task<IEnumerable<ClientBasePerson>> GetListOfPeople()
         {
             logger.LogInformation($"Calling API-GET for People List at {DateTime.Now.ToShortTimeString()}");
 
-            var result = await Http.GetFromJsonAsync<IEnumerable<Person>>(StringCollection.Api_PeopleControler_Uri);
+            var result = await Http.GetFromJsonAsync<IEnumerable<ClientBasePerson>>(StringCollection.Api_PeopleControler_Uri);
 
             return result;
         }
 
-        public async Task<Person> GetPersonById(string Id)
+        public async Task<ClientBasePerson> GetPersonById(string Id)
         {
             logger.LogInformation($"Calling API-GET for Person {Id} at {DateTime.Now.ToShortTimeString()}");
 
-            var result = await Http.GetFromJsonAsync<Person>(StringCollection.Api_PeopleControler_Uri + $"/{Id}");
+            var result = await Http.GetFromJsonAsync<ClientBasePerson>(StringCollection.Api_PeopleControler_Uri + $"/{Id}");
 
             return result;
         }
 
-        public async Task<HttpResponseMessage> AddPerson(Person person)
+        public async Task<HttpResponseMessage> AddPerson(ClientBasePerson person)
         {
             logger.LogInformation($"Calling API-POST for Person {person.Id} at {DateTime.Now.ToShortTimeString()}");
 
@@ -49,7 +50,7 @@ namespace ActivityPlanner2.Client.ClientServices
             return result;
         }
 
-        public async Task<HttpResponseMessage> UpdateVisitor(Person person)
+        public async Task<HttpResponseMessage> UpdateVisitor(ClientBasePerson person)
         {
             logger.LogInformation($"Calling API-PUT for Person {person.Id} at {DateTime.Now.ToShortTimeString()}");
 

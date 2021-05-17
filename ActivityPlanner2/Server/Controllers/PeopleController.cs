@@ -1,7 +1,9 @@
 ﻿using ActivityPlanner2.Data;
-using ActivityPlanner2.Shared;
+using ActivityPlanner2.Data.ServerModels;
+using ActivityPlanner2.Shared.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,7 +24,7 @@ namespace ActivityPlanner2.Server.Controllers
 
         // GET: api/<PeopleController>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Person>>> GetListOfPeople()
+        public async Task<ActionResult<IEnumerable<BasePersonDTO>>> GetListOfPeople()
         {
             var result = await context.GetListOfPeople();
 
@@ -31,12 +33,14 @@ namespace ActivityPlanner2.Server.Controllers
                 return NotFound();
             }
 
-            return Ok(result);
+            IEnumerable<BasePersonDTO> castedResult = result.ToList().ConvertAll(p => (BasePersonDTO)p);
+
+            return Ok(castedResult);
         }
 
         // GET api/<PeopleController>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Person>> GetPerson(string id)
+        public async Task<ActionResult<BasePersonDTO>> GetPerson(string id)
         {
             var result = await context.GetPersonById(id);
 
@@ -45,12 +49,12 @@ namespace ActivityPlanner2.Server.Controllers
                 return NotFound();
             }
 
-            return Ok(result);
+            return Ok((BasePersonDTO)result);
         }
 
         // POST api/<PeopleController>
         [HttpPost]
-        public async Task<ActionResult<Person>> Post([FromBody] Person value)
+        public async Task<ActionResult<BasePersonDTO>> Post([FromBody] BasePersonDTO value)
         {
             var check = await context.GetPersonById(value.Id);
 
@@ -68,12 +72,12 @@ namespace ActivityPlanner2.Server.Controllers
                 return NotFound();
             }
 
-            return Ok(result);
+            return Ok((BasePersonDTO)result);
         }
 
         // PUT api/<PeopleController>/5
         [HttpPut("{id}")]
-        public async Task<ActionResult<Person>> Put(string id, [FromBody] Person value)
+        public async Task<ActionResult<BasePersonDTO>> Put(string id, [FromBody] BasePersonDTO value)
         {
             var check = await context.GetPersonById(id);
 
@@ -91,7 +95,7 @@ namespace ActivityPlanner2.Server.Controllers
                 return NotFound();
             }
 
-            return Ok(result);
+            return Ok((BasePersonDTO)result);
         }
 
         // DELETE api/<PeopleController>/5

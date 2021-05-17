@@ -1,4 +1,4 @@
-﻿using ActivityPlanner2.Shared;
+﻿using ActivityPlanner2.Data.ServerModels;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;

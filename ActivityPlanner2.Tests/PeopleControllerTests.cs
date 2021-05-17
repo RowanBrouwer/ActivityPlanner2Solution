@@ -1,6 +1,8 @@
 ﻿using ActivityPlanner2.Data;
+using ActivityPlanner2.Data.ServerModels;
 using ActivityPlanner2.Server.Controllers;
 using ActivityPlanner2.Shared;
+using ActivityPlanner2.Shared.DTOs;
 using ActivityPlanner2.Tests.Setup;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.Identity;
@@ -47,7 +49,7 @@ namespace ActivityPlanner2.Tests
 
             var peopleObj = StaticMethods.GetObjectResultContent(okResult);
 
-            Assert.IsAssignableFrom<IEnumerable<Person>>(peopleObj);
+            Assert.IsAssignableFrom<IEnumerable<BasePersonDTO>>(peopleObj);
         }
 
         [Fact]
@@ -59,7 +61,7 @@ namespace ActivityPlanner2.Tests
 
             var personObj = StaticMethods.GetObjectResultContent(okResult);
 
-            Assert.IsAssignableFrom<Person>(personObj);
+            Assert.IsAssignableFrom<BasePersonDTO>(personObj);
         }
 
         [Fact]
@@ -67,18 +69,18 @@ namespace ActivityPlanner2.Tests
         {
             Person person = new() {Email = "xS1lv3r@xS1lv3r", FirstName = "Silver", LastName = "Dilver", UserName = "xS1lv3r@xS1lv3r"};
 
-            var okResult = await controller.Post(person);
+            var okResult = await controller.Post((BasePersonDTO)person);
 
             Assert.IsType<OkObjectResult>(okResult.Result);
 
             var personObj = StaticMethods.GetObjectResultContent(okResult);
 
-            Assert.IsAssignableFrom<Person>(personObj);
+            Assert.IsAssignableFrom<BasePersonDTO>(personObj);
 
-            Assert.Equal(person.Email, personObj.Email);
+            Assert.Equal(person.Id, personObj.Id);
             Assert.Equal(person.FirstName, personObj.FirstName);
+            Assert.Equal(person.MiddleName, personObj.MiddleName);
             Assert.Equal(person.LastName, personObj.LastName);
-            Assert.Equal(person.UserName, personObj.UserName);
         }
 
         [Fact]
@@ -88,13 +90,13 @@ namespace ActivityPlanner2.Tests
 
             personToUpdate.FirstName = "PutUpdateTest";
 
-            var okResult = await controller.Put(TestPersonId1 ,personToUpdate);
+            var okResult = await controller.Put(TestPersonId1 , (BasePersonDTO)personToUpdate);
 
             Assert.IsType<OkObjectResult>(okResult.Result);
 
-            var personObj = StaticMethods.GetObjectResultContent(okResult);
+            BasePersonDTO personObj = StaticMethods.GetObjectResultContent(okResult);
 
-            Assert.IsAssignableFrom<Person>(personObj);
+            Assert.IsAssignableFrom<BasePersonDTO>(personObj);
 
             Assert.Equal(personToUpdate.FirstName, personObj.FirstName);
         }
