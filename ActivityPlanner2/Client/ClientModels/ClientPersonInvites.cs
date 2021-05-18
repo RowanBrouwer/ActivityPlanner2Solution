@@ -3,26 +3,17 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace ActivityPlanner2.Data.ServerModels
+namespace ActivityPlanner2.Client.ClientModels
 {
-    public class PersonInvites
+    public class ClientPersonInvites
     {
-        [ForeignKey("Person")]
         public string PersonId { get; set; }
-        public Person Person { get; set; }
-        [ForeignKey("Activity")]
         public int ActivityId { get; set; }
-        public Activity Activity { get; set; }
         public bool Accepted { get; set; }
 
-        public PersonInvites()
-        {
-        }
-
-        public static explicit operator PersonInvites(PersonInvitesDTO dto)
+        public static explicit operator ClientPersonInvites(PersonInvitesDTO dto)
         {
             return new()
             {
@@ -32,7 +23,7 @@ namespace ActivityPlanner2.Data.ServerModels
             };
         }
 
-        public static explicit operator PersonInvitesDTO(PersonInvites invite)
+        public static explicit operator PersonInvitesDTO(ClientPersonInvites invite)
         {
             return new()
             {
@@ -41,6 +32,5 @@ namespace ActivityPlanner2.Data.ServerModels
                 PersonId = invite.PersonId
             };
         }
-
     }
 }

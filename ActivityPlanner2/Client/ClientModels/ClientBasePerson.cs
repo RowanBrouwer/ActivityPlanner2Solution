@@ -23,5 +23,16 @@ namespace ActivityPlanner2.Client.ClientModels
                 LastName = person.LastName
             };
         }
+
+        public static explicit operator BasePersonDTO(ClientBasePerson person)
+        {
+            return new()
+            {
+                Id = person.Id,
+                FirstName = person.FirstName,
+                MiddleName = person.MiddleName,
+                LastName = person.LastName
+            };
+        }
     }
 }

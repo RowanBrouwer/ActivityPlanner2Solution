@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace ActivityPlanner2.Data.ServerModels
 {
-    //maak DTO
     public class Person : IdentityUser
     {
         public string FirstName { get; set; }

@@ -11,8 +11,8 @@ namespace ActivityPlanner2.Client.ClientModels
     {
         public int Id { get; set; }
         public string ActivityName { get; set; }
-        public IEnumerable<ClientBasePerson> Organizers { get; set; }
-        public IEnumerable<ClientBasePerson> InvitedGuests { get; set; }
+        public IEnumerable<ClientPersonOrganizedActivity> Organizers { get; set; }
+        public IEnumerable<ClientPersonInvites> InvitedGuests { get; set; }
 
         public IEnumerable<ClientBasePerson> GuestsThatAccepted { get; set; }
 
@@ -24,16 +24,33 @@ namespace ActivityPlanner2.Client.ClientModels
 
         public static explicit operator ClientActivity(ActivityDTO activity)
         {
+
             return new()
             {
                 Id = activity.Id,
-                InvitedGuests = (IEnumerable<ClientBasePerson>)activity.InvitedGuests,
-                Organizers = (IEnumerable<ClientBasePerson>)activity.Organizers,
-                GuestsThatAccepted = (IEnumerable<ClientBasePerson>)activity.GuestsThatAccepted,
-                GuestsThatDeclined = (IEnumerable<ClientBasePerson>)activity.GuestsThatDeclined,
+                InvitedGuests = activity.InvitedGuests?.Cast<ClientPersonInvites>(),
+                Organizers = activity.Organizers?.Cast<ClientPersonOrganizedActivity>(),
+                GuestsThatAccepted = activity.GuestsThatAccepted?.Cast<ClientBasePerson>(),
+                GuestsThatDeclined = activity.GuestsThatDeclined?.Cast<ClientBasePerson>(),
                 ActivityName = activity.ActivityName,
                 DateOfDeadline = activity.DateOfDeadline.StringToNullableDateTime(),
                 DateOfEvent = activity.DateOfEvent.StringToNullableDateTime(),
+                Describtion = activity.Describtion
+            };
+        }
+
+        public static explicit operator ActivityDTO(ClientActivity activity)
+        {
+            return new()
+            {
+                Id = activity.Id,
+                InvitedGuests = activity.InvitedGuests?.Cast<PersonInvitesDTO>(),
+                Organizers = activity.InvitedGuests?.Cast<PersonOrganizedActivityDTO>(),
+                GuestsThatAccepted = activity.GuestsThatAccepted?.Cast<BasePersonDTO>(),
+                GuestsThatDeclined = activity.GuestsThatDeclined?.Cast<BasePersonDTO>(),
+                ActivityName = activity.ActivityName,
+                DateOfDeadline = activity.DateOfDeadline.ToString(),
+                DateOfEvent = activity.DateOfEvent.ToString(),
                 Describtion = activity.Describtion
             };
         }

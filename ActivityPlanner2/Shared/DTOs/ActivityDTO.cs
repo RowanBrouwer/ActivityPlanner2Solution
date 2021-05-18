@@ -10,8 +10,8 @@ namespace ActivityPlanner2.Shared.DTOs
     {
         public int Id { get; set; }
         public string ActivityName { get; set; }
-        public IEnumerable<BasePersonDTO> Organizers { get; set; }
-        public IEnumerable<BasePersonDTO> InvitedGuests { get; set; }
+        public IEnumerable<PersonOrganizedActivityDTO> Organizers { get; set; }
+        public IEnumerable<PersonInvitesDTO> InvitedGuests { get; set; }
         public IEnumerable<BasePersonDTO> GuestsThatAccepted { get; set; }
         public IEnumerable<BasePersonDTO> GuestsThatDeclined { get; set; }
         public string DateOfEvent { get; set; }
