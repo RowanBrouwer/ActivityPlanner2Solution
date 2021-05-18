@@ -6,15 +6,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ActivityPlanner2.Data.ActivityRepository
+namespace ActivityPlanner2.Data
 {
     public interface IActivityRepository
     {
         Task<Activity> GetActivityById(int id);
         Task<IEnumerable<Activity>> GetListOfActivities();
+        Task<IEnumerable<Activity>> GetListOfActivitiesByPersonId(string id);
         Task<IEnumerable<Activity>> GetListOfActivitiesByName(string name);
         Task AddActivity(Activity NewActivityToAdd);
-        Task DeleteActivity(int id);
+        Task DeleteActivity(Activity activityToDelete);
         Task UpdateActivity(Activity updatedActivityData);
     }
 }

@@ -5,38 +5,58 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ActivityPlanner2.Data.ActivityRepository
+namespace ActivityPlanner2.Data
 {
     public class ActivityRepository : IActivityRepository
     {
-        public Task AddActivity(Activity NewActivityToAdd)
+        ApplicationDbContext context;
+        public ActivityRepository(ApplicationDbContext context)
         {
-            throw new NotImplementedException();
+            this.context = context;
+        }
+        public async Task AddActivity(Activity NewActivityToAdd)
+        {
+            context.Activities.Add(NewActivityToAdd);
+            await context.SaveChangesAsync();
         }
 
-        public Task DeleteActivity(int id)
+        public async Task DeleteActivity(Activity activityToDelete)
         {
-            throw new NotImplementedException();
+            context.Activities.Remove(activityToDelete);
+            await context.SaveChangesAsync();
         }
 
-        public Task<Activity> GetActivityById(int id)
+        public async Task<Activity> GetActivityById(int id)
         {
-            throw new NotImplementedException();
+            var result = await context.Activities.FindAsync(id);
+            return result;
         }
 
         public Task<IEnumerable<Activity>> GetListOfActivities()
         {
-            throw new NotImplementedException();
+            IEnumerable<Activity> result = context.Activities;
+
+            return Task.FromResult(result);
         }
 
         public Task<IEnumerable<Activity>> GetListOfActivitiesByName(string name)
         {
-            throw new NotImplementedException();
+            IEnumerable<Activity> result = context.Activities.Where(a => a.ActivityName.Contains(name));
+
+            return Task.FromResult(result);
         }
 
-        public Task UpdateActivity(Activity updatedActivityData)
+        public Task<IEnumerable<Activity>> GetListOfActivitiesByPersonId(string id)
         {
-            throw new NotImplementedException();
+            IEnumerable<Activity> result = context.Activities.Where(p => p.InvitedGuests.Any(i => i.PersonId == id));
+
+            return Task.FromResult(result);
+        }
+
+        public async Task UpdateActivity(Activity updatedActivityData)
+        {
+            context.Activities.Update(updatedActivityData);
+            await context.SaveChangesAsync();
         }
     }
 }
