@@ -13,7 +13,7 @@ namespace ActivityPlanner2.Data.ServerModels
     {
         public int Id { get; set; }
         public string ActivityName { get; set; }
-        public IEnumerable<PersonOrginizedActivity> Organizers { get; set; }
+        public IEnumerable<PersonOrganizedActivity> Organizers { get; set; }
         public IEnumerable<PersonInvites> InvitedGuests { get; set; }
 
         public IEnumerable<Person> GuestsThatAccepted()
@@ -54,13 +54,13 @@ namespace ActivityPlanner2.Data.ServerModels
         {
             return new()
             {
-                Id = activity.Id,
+                Id = activity.Id == 0 ? 0 : activity.Id,
                 InvitedGuests = activity.InvitedGuests?.Cast<PersonInvites>(),
-                Organizers = activity.Organizers?.Cast<PersonOrginizedActivity>(),
-                ActivityName = activity.ActivityName,
-                DateOfDeadline = activity.DateOfDeadline.StringToNullableDateTime(),
-                DateOfEvent = activity.DateOfEvent.StringToNullableDateTime(),
-                Describtion = activity.Describtion
+                Organizers = activity.Organizers?.Cast<PersonOrganizedActivity>(),
+                ActivityName = activity.ActivityName ?? null,
+                DateOfDeadline = activity.DateOfDeadline?.StringToNullableDateTime(),
+                DateOfEvent = activity.DateOfEvent?.StringToNullableDateTime(),
+                Describtion = activity.Describtion ?? null
             };
         }
     }

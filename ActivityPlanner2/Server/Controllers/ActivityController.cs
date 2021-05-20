@@ -17,11 +17,15 @@ namespace ActivityPlanner2.Server.Controllers
     {
         IPersonRepository personContext;
         IActivityRepository activityContext;
+        IPersonInviteRepository invitePersonContext;
+        IPersonOrganizedActivityRepository organizeContext;
 
-        public ActivityController(IPersonRepository personContext, IActivityRepository activityContext)
+        public ActivityController(IPersonRepository personContext, IActivityRepository activityContext, IPersonInviteRepository invitePersonContext, IPersonOrganizedActivityRepository organizeContext)
         {
             this.personContext = personContext;
             this.activityContext = activityContext;
+            this.invitePersonContext = invitePersonContext;
+            this.organizeContext = organizeContext;
         }
         // GET: api/<ActivityController>
         [HttpGet]
@@ -77,8 +81,6 @@ namespace ActivityPlanner2.Server.Controllers
 
             try
             {
-                ActivityToAdd.InvitedGuests = value.InvitedGuests.Cast<PersonInvites>();
-                ActivityToAdd.Organizers = value.Organizers.Cast<PersonOrginizedActivity>();
                 ActivityToAdd = (Activity)value;
             }
             catch (InvalidCastException ex)
@@ -86,9 +88,11 @@ namespace ActivityPlanner2.Server.Controllers
                 return NotFound(ex);
             }
 
+            var InvitedPeopleDTOObject = value.InvitedGuests;
+
             var InvitedPeople = new List<PersonInvites>();
 
-            foreach (var person in ActivityToAdd.InvitedGuests)
+            foreach (var person in InvitedPeopleDTOObject)
             {
                 var invite = new PersonInvites()
                 {
@@ -97,27 +101,27 @@ namespace ActivityPlanner2.Server.Controllers
                     PersonId = person.PersonId,
                 };
 
-                invite.Activity = await activityContext.GetActivityById(person.ActivityId);
-                invite.Person = await personContext.GetPersonById(person.PersonId);
+                await invitePersonContext.AddInvite(invite);
 
                 InvitedPeople.Add(invite);
             }
 
             ActivityToAdd.InvitedGuests = InvitedPeople;
 
-            var personOrginizedActivitiesDTO = ActivityToAdd.Organizers;
+            var personOrginizedActivitiesDTO = value.Organizers;
 
-            var Organizers = new List<PersonOrginizedActivity>();
+            var Organizers = new List<PersonOrganizedActivity>();
 
             foreach (var person in personOrginizedActivitiesDTO)
             {
-                var invite = new PersonOrginizedActivity()
+                var invite = new PersonOrganizedActivity()
                 {
-                    OrganizedActivityId = person.OrganizedActivityId,
-                    OrganizerId = person.OrganizerId,
-                    OrganizedActivity = await activityContext.GetActivityById(person.OrganizedActivityId),
-                    Organizer = await personContext.GetPersonById(person.OrganizerId)
+                    OrganizedActivityId = person.ActivityId,
+                    OrganizerId = person.PersonId,
                 };
+
+                await organizeContext.AddInvite(invite);
+
                 Organizers.Add(invite);
             }
             ActivityToAdd.InvitedGuests = InvitedPeople;
@@ -173,14 +177,14 @@ namespace ActivityPlanner2.Server.Controllers
                 UpdatedInviteList.Add(invite);
             }
 
-            List<PersonOrginizedActivity> DTOOrganizerList = new();
-            List<PersonOrginizedActivity> UpdatedOrganizerList = new();
+            List<PersonOrganizedActivity> DTOOrganizerList = new();
+            List<PersonOrganizedActivity> UpdatedOrganizerList = new();
 
             if (value.InvitedGuests != null)
             {
                 try
                 {
-                    DTOOrganizerList = value.InvitedGuests.Cast<PersonOrginizedActivity>().ToList();
+                    DTOOrganizerList = value.InvitedGuests.Cast<PersonOrganizedActivity>().ToList();
                 }
                 catch (InvalidCastException ex)
                 {
@@ -190,7 +194,7 @@ namespace ActivityPlanner2.Server.Controllers
 
             foreach (var person in DTOOrganizerList)
             {
-                var invite = new PersonOrginizedActivity()
+                var invite = new PersonOrganizedActivity()
                 {
                     OrganizedActivityId = person.OrganizedActivityId,
                     OrganizerId = person.OrganizerId,

@@ -8,19 +8,19 @@ using System.Threading.Tasks;
 
 namespace ActivityPlanner2.Data.ServerModels
 {
-    public class PersonOrginizedActivity
+    public class PersonOrganizedActivity
     {
         public string OrganizerId { get; set; }
         public Person Organizer { get; set; }
         public int OrganizedActivityId { get; set; }
         public Activity OrganizedActivity { get; set; }
 
-        public PersonOrginizedActivity()
+        public PersonOrganizedActivity()
         {
 
         }
 
-        public PersonOrginizedActivity(Person person, Activity activity)
+        public PersonOrganizedActivity(Person person, Activity activity)
         {
             OrganizerId = person.Id;
             Organizer = person;
@@ -28,7 +28,7 @@ namespace ActivityPlanner2.Data.ServerModels
             OrganizedActivity = activity;
         }
 
-        public static explicit operator PersonOrginizedActivity(PersonOrganizedActivityDTO dto)
+        public static explicit operator PersonOrganizedActivity(PersonOrganizedActivityDTO dto)
         {
             return new()
             {
@@ -37,7 +37,7 @@ namespace ActivityPlanner2.Data.ServerModels
             };
         }
 
-        public static explicit operator PersonOrganizedActivityDTO(PersonOrginizedActivity invite)
+        public static explicit operator PersonOrganizedActivityDTO(PersonOrganizedActivity invite)
         {
             return new()
             {

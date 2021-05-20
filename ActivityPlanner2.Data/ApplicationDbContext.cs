@@ -29,7 +29,7 @@ namespace ActivityPlanner2.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<PersonOrginizedActivity>()
+            modelBuilder.Entity<PersonOrganizedActivity>()
                 .HasKey(pa => new { pa.OrganizerId, pa.OrganizedActivityId });
 
             modelBuilder.Entity<PersonInvites>()
@@ -41,6 +41,6 @@ namespace ActivityPlanner2.Data
         public DbSet<Person> People { get; set; }
         public DbSet<Activity> Activities { get; set; }
         public DbSet<PersonInvites>  PersonActivities { get; set; }
-        public DbSet<PersonOrginizedActivity> PersonOrginizers { get; set; }
+        public DbSet<PersonOrganizedActivity> PersonOrginizers { get; set; }
     }
 }

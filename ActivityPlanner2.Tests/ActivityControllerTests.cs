@@ -26,6 +26,8 @@ namespace ActivityPlanner2.Tests
         ApplicationDbContext db;
         IPersonRepository personContext;
         IActivityRepository activityContext;
+        IPersonInviteRepository personInviteRepository;
+        IPersonOrganizedActivityRepository organizedContext;
         readonly string TestPersonId1;
         readonly string TestPersonId2;
         readonly int TestActivityId1;
@@ -37,7 +39,9 @@ namespace ActivityPlanner2.Tests
             DbSetup.Seed(manager, db);
             personContext = new PersonRepository(db);
             activityContext = new ActivityRepository(db);
-            controller = new ActivityController(personContext, activityContext);
+            personInviteRepository = new PersonInviteRepository(db, personContext, activityContext);
+            organizedContext = new PersonOrganizedActivityRepository(db, personContext, activityContext);
+            controller = new ActivityController(personContext, activityContext, personInviteRepository, organizedContext);
             TestPersonId1 = db.People.First().Id;
             TestPersonId2 = db.People.Skip(1).First().Id;
             TestActivityId1 = db.Activities.First().Id;

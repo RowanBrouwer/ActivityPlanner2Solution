@@ -212,30 +212,30 @@ public class ApplicationDbSeed
 
             if (db.PersonOrginizers.Count() == 0)
             {
-                List<PersonOrginizedActivity> orginizedActivities = new List<PersonOrginizedActivity>()
+                List<PersonOrganizedActivity> orginizedActivities = new List<PersonOrganizedActivity>()
                 {
-                    new PersonOrginizedActivity
+                    new PersonOrganizedActivity
                     {
                         Organizer = db.People.Where(p => p.FirstName == "Test" && p.LastName == "Person").FirstOrDefault(),
                         OrganizerId = db.People.Where(p => p.FirstName == "Test" && p.LastName == "Person").FirstOrDefault().Id,
                         OrganizedActivity = db.Activities.Where(a => a.ActivityName == "Scating").FirstOrDefault(),
                         OrganizedActivityId = db.Activities.Where(a => a.ActivityName == "Scating").FirstOrDefault().Id
                     },
-                    new PersonOrginizedActivity
+                    new PersonOrganizedActivity
                     {
                         Organizer = db.People.Where(p => p.FirstName == "Rowan" && p.LastName == "Brouwer").FirstOrDefault(),
                         OrganizerId = db.People.Where(p => p.FirstName == "Rowan" && p.LastName == "Brouwer").FirstOrDefault().Id,
                         OrganizedActivity = db.Activities.Where(a => a.ActivityName == "Bowling").FirstOrDefault(),
                         OrganizedActivityId = db.Activities.Where(a => a.ActivityName == "Bowling").FirstOrDefault().Id
                     },
-                    new PersonOrginizedActivity
+                    new PersonOrganizedActivity
                     {
                         Organizer = db.People.Where(p => p.FirstName == "Rowan" && p.LastName == "Brouwer").FirstOrDefault(),
                         OrganizerId = db.People.Where(p => p.FirstName == "Rowan" && p.LastName == "Brouwer").FirstOrDefault().Id,
                         OrganizedActivity = db.Activities.Where(a => a.ActivityName == "Darting").FirstOrDefault(),
                         OrganizedActivityId = db.Activities.Where(a => a.ActivityName == "Darting").FirstOrDefault().Id
                     },
-                    new PersonOrginizedActivity
+                    new PersonOrganizedActivity
                     {
                         Organizer = db.People.Where(p => p.FirstName == "Rowan" && p.MiddleName == "de" && p.LastName == "Drouwer").FirstOrDefault(),
                         OrganizerId = db.People.Where(p => p.FirstName == "Rowan" && p.MiddleName == "de" && p.LastName == "Drouwer").FirstOrDefault().Id,

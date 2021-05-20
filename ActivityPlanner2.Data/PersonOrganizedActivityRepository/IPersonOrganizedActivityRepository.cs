@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ActivityPlanner2.Data.ServerModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,10 @@ namespace ActivityPlanner2.Data
 {
     public interface IPersonOrganizedActivityRepository
     {
+        Task<PersonOrganizedActivity> GetInviteByPersonId(string id);
+        Task<PersonOrganizedActivity> GetInviteByActivityId(int id);
+        Task AddInvite(PersonOrganizedActivity invite);
+        Task UpdateInvite(PersonOrganizedActivity invite);
+        Task DeleteInvite(int id);
     }
 }
