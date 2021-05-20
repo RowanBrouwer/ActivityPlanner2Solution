@@ -27,8 +27,8 @@ namespace ActivityPlanner2.Data.ServerModels
             return new()
             {
                 Accepted = dto.Accepted,
-                ActivityId = dto.ActivityId,
-                PersonId = dto.PersonId
+                ActivityId = dto.ActivityId == 0 ? 0 : dto.ActivityId,
+                PersonId = dto.PersonId ?? null
             };
         }
 

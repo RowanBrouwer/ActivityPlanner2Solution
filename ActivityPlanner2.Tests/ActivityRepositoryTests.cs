@@ -57,7 +57,7 @@ namespace ActivityPlanner2.Tests
 
             string name = activityToDelete.ActivityName;
 
-            await context.DeleteActivity(activityToDelete);
+            await context.DeleteActivity(activityToDelete.Id);
 
             Assert.DoesNotContain(db.Activities, p => p.ActivityName == name);
         }

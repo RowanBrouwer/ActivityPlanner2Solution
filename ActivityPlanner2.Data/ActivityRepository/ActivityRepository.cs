@@ -14,14 +14,17 @@ namespace ActivityPlanner2.Data
         {
             this.context = context;
         }
+
         public async Task AddActivity(Activity NewActivityToAdd)
         {
             context.Activities.Add(NewActivityToAdd);
             await context.SaveChangesAsync();
         }
 
-        public async Task DeleteActivity(Activity activityToDelete)
+        public async Task DeleteActivity(int Id)
         {
+            var activityToDelete = await GetActivityById(Id);
+
             context.Activities.Remove(activityToDelete);
             await context.SaveChangesAsync();
         }

@@ -15,7 +15,7 @@ namespace ActivityPlanner2.Data
         Task<IEnumerable<Activity>> GetListOfActivitiesByPersonId(string id);
         Task<IEnumerable<Activity>> GetListOfActivitiesByName(string name);
         Task AddActivity(Activity NewActivityToAdd);
-        Task DeleteActivity(Activity activityToDelete);
+        Task DeleteActivity(int Id);
         Task UpdateActivity(Activity updatedActivityData);
     }
 }
