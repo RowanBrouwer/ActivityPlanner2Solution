@@ -37,7 +37,7 @@ namespace ActivityPlanner2.Data.ServerModels
             return new()
             {
                 Accepted = invite.Accepted,
-                ActivityId = invite.ActivityId,
+                ActivityId = invite.ActivityId == 0 ? 0 : invite.ActivityId,
                 PersonId = invite.PersonId
             };
         }

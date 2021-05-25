@@ -55,8 +55,6 @@ namespace ActivityPlanner2.Data.ServerModels
             return new()
             {
                 Id = activity.Id == 0 ? 0 : activity.Id,
-                InvitedGuests = activity.InvitedGuests?.Cast<PersonInvites>(),
-                Organizers = activity.Organizers?.Cast<PersonOrganizedActivity>(),
                 ActivityName = activity.ActivityName ?? null,
                 DateOfDeadline = activity.DateOfDeadline?.StringToNullableDateTime(),
                 DateOfEvent = activity.DateOfEvent?.StringToNullableDateTime(),

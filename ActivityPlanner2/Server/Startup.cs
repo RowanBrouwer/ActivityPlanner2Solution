@@ -40,6 +40,9 @@ namespace ActivityPlanner2.Server
                 .AddApiAuthorization<Person, ApplicationDbContext>();
 
             services.AddScoped<IPersonRepository, PersonRepository>();
+            services.AddScoped<IPersonInviteRepository, PersonInviteRepository>();
+            services.AddScoped<IPersonOrganizedActivityRepository, PersonOrganizedActivityRepository>();
+            services.AddScoped<IActivityLogic, ActivityLogic>();
             services.AddScoped<IActivityRepository, ActivityRepository>();
 
             services.AddAuthentication()

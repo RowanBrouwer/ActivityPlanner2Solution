@@ -1,6 +1,7 @@
 ﻿using ActivityPlanner2.Data;
 using ActivityPlanner2.Data.ServerModels;
 using ActivityPlanner2.Shared.DTOs;
+using ActivityPlanner2.Shared.ExtensionMethods;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -17,15 +18,11 @@ namespace ActivityPlanner2.Server.Controllers
     {
         IPersonRepository personContext;
         IActivityRepository activityContext;
-        IPersonInviteRepository invitePersonContext;
-        IPersonOrganizedActivityRepository organizeContext;
 
-        public ActivityController(IPersonRepository personContext, IActivityRepository activityContext, IPersonInviteRepository invitePersonContext, IPersonOrganizedActivityRepository organizeContext)
+        public ActivityController(IPersonRepository personContext, IActivityRepository activityContext)
         {
             this.personContext = personContext;
             this.activityContext = activityContext;
-            this.invitePersonContext = invitePersonContext;
-            this.organizeContext = organizeContext;
         }
         // GET: api/<ActivityController>
         [HttpGet]
@@ -77,56 +74,9 @@ namespace ActivityPlanner2.Server.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] ActivityDTO value)
         {
-            Activity ActivityToAdd = new Activity();
+            Activity ActivityToAdd = new();
 
-            try
-            {
-                ActivityToAdd = (Activity)value;
-            }
-            catch (InvalidCastException ex)
-            {
-                return NotFound(ex);
-            }
-
-            var InvitedPeopleDTOObject = value.InvitedGuests;
-
-            var InvitedPeople = new List<PersonInvites>();
-
-            foreach (var person in InvitedPeopleDTOObject)
-            {
-                var invite = new PersonInvites()
-                {
-                    Accepted = person.Accepted,
-                    ActivityId = person.ActivityId,
-                    PersonId = person.PersonId,
-                };
-
-                await invitePersonContext.AddInvite(invite);
-
-                InvitedPeople.Add(invite);
-            }
-
-            ActivityToAdd.InvitedGuests = InvitedPeople;
-
-            var personOrginizedActivitiesDTO = value.Organizers;
-
-            var Organizers = new List<PersonOrganizedActivity>();
-
-            foreach (var person in personOrginizedActivitiesDTO)
-            {
-                var invite = new PersonOrganizedActivity()
-                {
-                    OrganizedActivityId = person.ActivityId,
-                    OrganizerId = person.PersonId,
-                };
-
-                await organizeContext.AddInvite(invite);
-
-                Organizers.Add(invite);
-            }
-            ActivityToAdd.InvitedGuests = InvitedPeople;
-
-            await activityContext.AddActivity(ActivityToAdd);
+            await activityContext.AddActivityFromDTO(value, ActivityToAdd);
 
             var AddedActivity = activityContext.GetActivityById(ActivityToAdd.Id);
 
@@ -147,61 +97,6 @@ namespace ActivityPlanner2.Server.Controllers
             if (savedActivity == null)
             {
                 return NotFound();
-            }
-
-            List<PersonInvites> DTOPersonInviteList = new();
-            List<PersonInvites> UpdatedInviteList = new();
-
-            if (value.InvitedGuests != null)
-            {
-                try
-                {
-                    DTOPersonInviteList = value.InvitedGuests.Cast<PersonInvites>().ToList();
-                }
-                catch (InvalidCastException ex)
-                {
-                    return NotFound(ex);
-                } 
-            }
-
-            foreach (var person in DTOPersonInviteList)
-            {
-                var invite = new PersonInvites()
-                {
-                    ActivityId = person.ActivityId,
-                    PersonId = person.PersonId,
-                    Activity = await activityContext.GetActivityById(person.ActivityId),
-                    Person = await personContext.GetPersonById(person.PersonId),
-                    Accepted = person.Accepted
-                };
-                UpdatedInviteList.Add(invite);
-            }
-
-            List<PersonOrganizedActivity> DTOOrganizerList = new();
-            List<PersonOrganizedActivity> UpdatedOrganizerList = new();
-
-            if (value.InvitedGuests != null)
-            {
-                try
-                {
-                    DTOOrganizerList = value.InvitedGuests.Cast<PersonOrganizedActivity>().ToList();
-                }
-                catch (InvalidCastException ex)
-                {
-                    return NotFound(ex);
-                }
-            }
-
-            foreach (var person in DTOOrganizerList)
-            {
-                var invite = new PersonOrganizedActivity()
-                {
-                    OrganizedActivityId = person.OrganizedActivityId,
-                    OrganizerId = person.OrganizerId,
-                    OrganizedActivity = await activityContext.GetActivityById(person.OrganizedActivityId),
-                    Organizer = await personContext.GetPersonById(person.OrganizerId)
-                };
-                UpdatedOrganizerList.Add(invite);
             }
 
             return NoContent();

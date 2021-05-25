@@ -25,28 +25,40 @@ namespace ActivityPlanner2.Data
             invite.Activity = await activityRepository.GetActivityById(invite.ActivityId);
             invite.Person = await PersonContext.GetPersonById(invite.PersonId);
 
-            DbContext.PersonActivities.Add(invite);
+            await DbContext.PersonActivities.AddAsync(invite);
             DbContext.SaveChanges();
         }
 
-        public Task DeleteInvite(int id)
+        public async Task DeleteInviteByActivityId(int id)
         {
-            throw new NotImplementedException();
+            var personInviteToDelete = await GetInviteByActivityId(id);
+            DbContext.PersonActivities.Remove(personInviteToDelete);
         }
 
-        public Task<PersonInvites> GetInviteByActivityId(int id)
+        public async Task DeleteInviteByPersonId(string id)
         {
-            throw new NotImplementedException();
+            var personInviteToDelete = await GetInviteByPersonId(id);
+            DbContext.PersonActivities.Remove(personInviteToDelete);
         }
 
-        public Task<PersonInvites> GetInviteByPersonId(string id)
+        public async Task<PersonInvites> GetInviteByActivityId(int id)
         {
-            throw new NotImplementedException();
+            var result = DbContext.PersonActivities.Where(i => i.ActivityId == id).FirstOrDefault();
+
+            return await Task.FromResult(result);
         }
 
-        public Task UpdateInvite(PersonInvites updatedActivityData)
+        public async Task<PersonInvites> GetInviteByPersonId(string id)
         {
-            throw new NotImplementedException();
+            var result = DbContext.PersonActivities.Where(i => i.PersonId == id).FirstOrDefault();
+
+            return await Task.FromResult(result);
+        }
+
+        public async Task UpdateInvite(PersonInvites updatedActivityData)
+        {
+            DbContext.PersonActivities.Update(updatedActivityData);
+            await DbContext.SaveChangesAsync();
         }
     }
 }

@@ -13,6 +13,7 @@ namespace ActivityPlanner2.Data
         Task<PersonInvites> GetInviteByActivityId(int id);
         Task AddInvite(PersonInvites Invite);
         Task UpdateInvite(PersonInvites Invite);
-        Task DeleteInvite(int id);
+        Task DeleteInviteByActivityId(int id);
+        Task DeleteInviteByPersonId(string id);
     }
 }

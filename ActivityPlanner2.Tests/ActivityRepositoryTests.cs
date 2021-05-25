@@ -10,16 +10,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using ActivityPlanner2.Shared.DTOs;
 
 namespace ActivityPlanner2.Tests
 {
     public class ActivityRepositoryTests
     {
         (DbContextOptions, IOptions<OperationalStoreOptions>) options = DbSetup.CreateNewContextOptions();
-
-        UserManager<Person> manager;
-        ApplicationDbContext db;
-        IActivityRepository context;
+        readonly UserManager<Person> manager;
+        readonly ApplicationDbContext db;
+        readonly IPersonRepository personContext;
+        readonly IPersonInviteRepository personInviteRepository;
+        readonly IPersonOrganizedActivityRepository organizedContext;
+        readonly IActivityRepository context;
+        readonly IActivityLogic logic;
 
         readonly string TestPersonId1;
         readonly string TestPersonId2;
@@ -32,7 +36,17 @@ namespace ActivityPlanner2.Tests
             db = DbSetup.CreateContext(options);
             manager = DbSetup.CreateUsermanager(db);
             DbSetup.Seed(manager, db);
-            context = new ActivityRepository(db);
+            personContext = new PersonRepository(db);
+            personInviteRepository = new PersonInviteRepository(db, personContext, context);
+            organizedContext = new PersonOrganizedActivityRepository(db, personContext, context);
+            logic = new ActivityLogic(personInviteRepository, organizedContext, db);
+            context = new ActivityRepository(db, logic);
+
+            personContext = new PersonRepository(db);
+            personInviteRepository = new PersonInviteRepository(db, personContext, context);
+            organizedContext = new PersonOrganizedActivityRepository(db, personContext, context);
+            logic = new ActivityLogic(personInviteRepository, organizedContext, db);
+            context = new ActivityRepository(db, logic);
 
             TestPersonId1 = db.People.First().Id;
             TestPersonId2 = db.People.Skip(1).First().Id;
@@ -41,13 +55,35 @@ namespace ActivityPlanner2.Tests
         }
 
         [Fact]
-        public void AddActivityTest()
+        public void AddActivityFromActivityTest()
         {
             var activity = new Activity() { ActivityName = "RepTest"};
 
-            context.AddActivity(activity);
+            context.AddActivityFromActivity(activity);
 
             Assert.Contains(db.Activities, p => p.ActivityName == "RepTest");
+        }
+
+        [Fact]
+        public void AddActivityFromDTOTest()
+        {
+            var activity = new ActivityDTO()
+            {
+                ActivityName = "TestPost",
+                DateOfDeadline = DateTime.Now.ToString(),
+                DateOfEvent = DateTime.Now.ToString(),
+                Describtion = "Just a test",
+                InvitedGuests = new List<PersonInvitesDTO>() {
+                 new PersonInvitesDTO() { PersonId = TestPersonId1, Accepted = true}
+                , new PersonInvitesDTO() { PersonId = TestPersonId2, Accepted = true } },
+                Organizers = new List<PersonOrganizedActivityDTO>() { new PersonOrganizedActivityDTO() { PersonId = TestPersonId1 } }
+            };
+
+            var ActivityToAdd = new Activity();
+
+            context.AddActivityFromDTO(activity, ActivityToAdd);
+
+            Assert.Contains(db.Activities, p => p.ActivityName == "TestPost");
         }
 
         [Fact]
@@ -67,7 +103,7 @@ namespace ActivityPlanner2.Tests
         {
             var activityToAdd = new Activity() { ActivityName = "GetByIdTest" };
 
-            await context.AddActivity(activityToAdd);
+            await context.AddActivityFromActivity(activityToAdd);
 
             var foundActivity = await context.GetActivityById(activityToAdd.Id);
 
@@ -103,17 +139,40 @@ namespace ActivityPlanner2.Tests
         }
 
         [Fact]
-        public async Task UpdateActivityTest()
+        public async Task UpdateActivityFromActivityTest()
         {
             var dbActivity = await context.GetActivityById(TestActivityId1);
 
             dbActivity.ActivityName = "TestActivityName";
 
-            await context.UpdateActivity(dbActivity);
+            await context.UpdateActivityFromActivity(dbActivity);
 
             var dbActivityToCheck = await context.GetActivityById(TestActivityId1);
 
             Assert.Equal(dbActivity, dbActivityToCheck);
+        }
+
+        [Fact]
+        public async Task UpdateActivityFromDTOTest()
+        {
+            var dbActivityForChecking = await context.GetActivityById(TestActivityId1);
+
+            var activity = new ActivityDTO()
+            {
+                Id = dbActivityForChecking.Id,
+                ActivityName = "TestPost",
+                DateOfDeadline = DateTime.Now.ToString(),
+                DateOfEvent = DateTime.Now.ToString(),
+                Describtion = "Just a test",
+                InvitedGuests = new List<PersonInvitesDTO>() {
+                 new PersonInvitesDTO() { PersonId = TestPersonId1, Accepted = true}
+                , new PersonInvitesDTO() { PersonId = TestPersonId2, Accepted = true } },
+                Organizers = new List<PersonOrganizedActivityDTO>() { new PersonOrganizedActivityDTO() { PersonId = TestPersonId1 } }
+            };
+
+            await context.UpdateActivityFromDTO(TestActivityId1, activity);
+
+            Assert.Contains(db.Activities, a => a == dbActivityForChecking);
         }
     }
 }
