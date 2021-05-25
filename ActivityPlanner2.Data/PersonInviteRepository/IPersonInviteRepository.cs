@@ -9,11 +9,13 @@ namespace ActivityPlanner2.Data
 {
     public interface IPersonInviteRepository
     {
-        Task<PersonInvites> GetInviteByPersonId(string id);
-        Task<PersonInvites> GetInviteByActivityId(int id);
+        Task<IEnumerable<PersonInvites>> GetInvitesByPersonId(string id);
+        Task<PersonInvites> GetInviteByPersonIdAndActivityId(string personId, int activityId);
+        Task<IEnumerable<PersonInvites>> GetInvitesByActivityId(int id);
         Task AddInvite(PersonInvites Invite);
         Task UpdateInvite(PersonInvites Invite);
-        Task DeleteInviteByActivityId(int id);
-        Task DeleteInviteByPersonId(string id);
+        Task DeleteInvitesByActivityId(int id);
+        Task DeleteInvitesByPersonId(string id);
+        Task DeleteInviteByPersonIdAndActivityId(string personId, int activityId);
     }
 }

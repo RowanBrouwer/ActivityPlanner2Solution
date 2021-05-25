@@ -28,10 +28,11 @@ namespace ActivityPlanner2.Data
 
             foreach (var personOrganizer in value.Organizers)
             {
-                if (await invitePersonContext.GetInviteByActivityId(personOrganizer.ActivityId) != null)
+                if (await invitePersonContext.GetInvitesByActivityId(personOrganizer.ActivityId) != null)
                 {
-                    invite = (PersonOrganizedActivity)value.InvitedGuests;
-                    await organizeContext.UpdateInvite(invite);
+                    invite = (PersonOrganizedActivity)personOrganizer;
+                    invite.OrganizedActivityId = Id;
+                    await organizeContext.UpdateOrganizedActivities(invite);
                 }   
 
                 Organizers.Add((PersonOrganizedActivity)personOrganizer);
@@ -49,9 +50,10 @@ namespace ActivityPlanner2.Data
 
             foreach (var personInvite in value.InvitedGuests)
             {
-                if (await invitePersonContext.GetInviteByActivityId(personInvite.ActivityId) != null)
+                if (await invitePersonContext.GetInvitesByActivityId(personInvite.ActivityId) != null)
                 {
-                    invite = (PersonInvites)value.InvitedGuests;
+                    invite = (PersonInvites)personInvite;
+                    //invite.ActivityId = Id;
                     await invitePersonContext.UpdateInvite(invite);
                 }
 

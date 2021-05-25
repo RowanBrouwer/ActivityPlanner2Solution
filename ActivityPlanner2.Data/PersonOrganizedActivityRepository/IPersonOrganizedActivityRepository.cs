@@ -9,11 +9,13 @@ namespace ActivityPlanner2.Data
 {
     public interface IPersonOrganizedActivityRepository
     {
-        Task<PersonOrganizedActivity> GetInviteByPersonId(string id);
-        Task<PersonOrganizedActivity> GetInviteByActivityId(int id);
-        Task AddInvite(PersonOrganizedActivity invite);
-        Task UpdateInvite(PersonOrganizedActivity invite);
-        Task DeleteInviteByPersonId(string id);
-        Task DeleteInviteByActivityId(int id);
+        Task<IEnumerable<PersonOrganizedActivity>> GetOrganizedActivitiesByPersonId(string id);
+        Task<PersonOrganizedActivity> GetOrganizedActivitiesByPersonIdAndActivityId(string personId, int activityId);
+        Task<IEnumerable<PersonOrganizedActivity>> GetOrganizedActivitiesByActivityId(int id);
+        Task AddOrganizedActivities(PersonOrganizedActivity Invite);
+        Task UpdateOrganizedActivities(PersonOrganizedActivity Invite);
+        Task DeleteOrganizedActivitiesByActivityId(int id);
+        Task DeleteOrganizedActivitiesByPersonId(string id);
+        Task DeleteOrganizedActivitiesByPersonIdAndActivityId(string personId, int activityId);
     }
 }

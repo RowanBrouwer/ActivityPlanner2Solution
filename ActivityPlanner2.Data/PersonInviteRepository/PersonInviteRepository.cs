@@ -21,7 +21,7 @@ namespace ActivityPlanner2.Data
             this.activityRepository = activityRepository;
         }
         public async Task AddInvite(PersonInvites invite)
-{
+        {
             invite.Activity = await activityRepository.GetActivityById(invite.ActivityId);
             invite.Person = await PersonContext.GetPersonById(invite.PersonId);
 
@@ -29,28 +29,47 @@ namespace ActivityPlanner2.Data
             DbContext.SaveChanges();
         }
 
-        public async Task DeleteInviteByActivityId(int id)
+        public async Task DeleteInviteByPersonIdAndActivityId(string personId, int activityId)
         {
-            var personInviteToDelete = await GetInviteByActivityId(id);
+            var personInviteToDelete = await GetInviteByPersonIdAndActivityId(personId, activityId);
             DbContext.PersonActivities.Remove(personInviteToDelete);
+
+            await DbContext.SaveChangesAsync();
         }
 
-        public async Task DeleteInviteByPersonId(string id)
+        public async Task DeleteInvitesByActivityId(int id)
         {
-            var personInviteToDelete = await GetInviteByPersonId(id);
-            DbContext.PersonActivities.Remove(personInviteToDelete);
+            var personInviteToDelete = await GetInvitesByActivityId(id);
+            DbContext.PersonActivities.RemoveRange(personInviteToDelete);
+
+            await DbContext.SaveChangesAsync();
         }
 
-        public async Task<PersonInvites> GetInviteByActivityId(int id)
+        public async Task DeleteInvitesByPersonId(string id)
         {
-            var result = DbContext.PersonActivities.Where(i => i.ActivityId == id).FirstOrDefault();
+            var personInviteToDelete = await GetInvitesByPersonId(id);
+            DbContext.PersonActivities.RemoveRange(personInviteToDelete);
+
+            await DbContext.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<PersonInvites>> GetInvitesByActivityId(int id)
+        {
+            var result = DbContext.PersonActivities.Where(i => i.ActivityId == id);
 
             return await Task.FromResult(result);
         }
 
-        public async Task<PersonInvites> GetInviteByPersonId(string id)
+        public async Task<IEnumerable<PersonInvites>> GetInvitesByPersonId(string id)
         {
-            var result = DbContext.PersonActivities.Where(i => i.PersonId == id).FirstOrDefault();
+            var result = DbContext.PersonActivities.Where(i => i.PersonId == id);
+
+            return await Task.FromResult(result);
+        }
+
+        public async Task<PersonInvites> GetInviteByPersonIdAndActivityId(string personId, int activityId)
+        {
+            var result = DbContext.PersonActivities.Where(i => i.ActivityId == activityId && i.PersonId == personId).FirstOrDefault();
 
             return await Task.FromResult(result);
         }
