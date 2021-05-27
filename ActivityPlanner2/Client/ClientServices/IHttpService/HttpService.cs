@@ -59,6 +59,16 @@ namespace ActivityPlanner2.Client.ClientServices
             return result;
         }
 
+
+        public async Task<IEnumerable<ClientActivity>> GetlistOfInvitedActivitiesByPerson(string id)
+        {
+            logger.LogInformation($"Calling API-PUT for Person {id} at {DateTime.Now.ToShortTimeString()}");
+
+            var result = await Http.GetFromJsonAsync<IEnumerable<ClientActivity>>($"api/Invited{id}");
+
+            return result.Cast<ClientActivity>();
+        }
+
         public void Dispose()
         {
             ((IDisposable)Http).Dispose();

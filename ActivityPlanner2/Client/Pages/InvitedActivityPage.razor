@@ -1,0 +1,38 @@
+﻿@page "/Invites"
+@inherits InvitedActivityPageModel
+
+<h3>Invites</h3>
+
+<div class="col-auto" style="padding:4px,10px,2px,10px">
+    <div class="row">
+        <div class="col border border-dark col-4">
+            Activity Name
+        </div>
+        <div class="col border border-dark col-2">
+            Date Of Deadline
+        </div>
+        <div class="col border border-dark col-2">
+            Date Of Event
+        </div>
+        <div class="col border border-dark col-2">
+            Describtion
+        </div>
+    </div>
+    @foreach (var activity in InvitedActivities)
+    {
+        <div class="row">
+            <div class="col border border-dark col-4">
+                @activity.ActivityName
+            </div>
+            <div class="col border border-dark col-2">
+                @activity.DateOfDeadline
+            </div>
+            <div class="col border border-dark col-2">
+                @activity.DateOfEvent
+            </div>
+            <div class="col border border-dark col-2">
+                @activity.Describtion
+            </div>
+        </div>
+    }
+</div>

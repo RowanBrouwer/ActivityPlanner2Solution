@@ -87,16 +87,23 @@ namespace ActivityPlanner2.Data
             return Task.FromResult(result);
         }
 
-        public Task<IEnumerable<Activity>> GetListOfActivitiesByPersonId(string id)
+        public Task<IEnumerable<Activity>> GetListOfInvitedActivitiesByPersonId(string id)
         {
             IEnumerable<Activity> result = context.Activities.Where(p => p.InvitedGuests.Any(i => i.PersonId == id));
 
             return Task.FromResult(result);
         }
 
+        public Task<IEnumerable<Activity>> GetListOfOrganizedActivitiesByPersonId(string id)
+        {
+            IEnumerable<Activity> result = context.Activities.Where(p => p.Organizers.Any(i => i.OrganizerId == id));
+
+            return Task.FromResult(result);
+        }
+
         public async Task UpdateActivityFromActivity(Activity activity)
         {
-            context.Update(activity);
+            context.Activities.Update(activity);
             await context.SaveChangesAsync();
         }
 

@@ -40,13 +40,13 @@ namespace ActivityPlanner2.Tests
             personInviteRepository = new PersonInviteRepository(db, personContext, context);
             organizedContext = new PersonOrganizedActivityRepository(db, personContext, context);
             logic = new ActivityLogic(personInviteRepository, organizedContext, db);
-            context = new ActivityRepository(db, logic);
+            context = new ActivityRepository(db, logic, personInviteRepository, organizedContext);
 
             personContext = new PersonRepository(db);
             personInviteRepository = new PersonInviteRepository(db, personContext, context);
             organizedContext = new PersonOrganizedActivityRepository(db, personContext, context);
             logic = new ActivityLogic(personInviteRepository, organizedContext, db);
-            context = new ActivityRepository(db, logic);
+            context = new ActivityRepository(db, logic, personInviteRepository, organizedContext);
 
             TestPersonId1 = db.People.First().Id;
             TestPersonId2 = db.People.Skip(1).First().Id;
@@ -131,7 +131,7 @@ namespace ActivityPlanner2.Tests
         [Fact]
         public async Task GetListOfActivitiesByPersonIdTest()
         {
-            var PersonBasedList = await context.GetListOfActivitiesByPersonId(TestPersonId1);
+            var PersonBasedList = await context.GetListOfInvitedActivitiesByPersonId(TestPersonId1);
 
             Assert.Equal(4, PersonBasedList.Count());
 

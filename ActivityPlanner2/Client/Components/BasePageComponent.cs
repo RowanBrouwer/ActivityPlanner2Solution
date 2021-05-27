@@ -1,13 +1,7 @@
 ﻿using ActivityPlanner2.Client.ClientServices;
-using ActivityPlanner2.Client.Pages;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Components.Authorization;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace ActivityPlanner2.Client.Components
 {
@@ -17,5 +11,7 @@ namespace ActivityPlanner2.Client.Components
         protected IHttpService Http { get; set; }
         [Inject]
         protected NavigationManager NavManager { get; set; }
+        [Inject]
+        protected AuthenticationStateProvider AuthState { get; set; }
     }
 }

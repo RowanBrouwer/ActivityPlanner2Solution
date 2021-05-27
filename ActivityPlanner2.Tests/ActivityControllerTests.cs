@@ -43,14 +43,14 @@ namespace ActivityPlanner2.Tests
             personInviteRepository = new PersonInviteRepository(db, personContext, activityContext);
             organizedContext = new PersonOrganizedActivityRepository(db, personContext, activityContext);
             Logic = new ActivityLogic(personInviteRepository, organizedContext, db);
-            activityContext = new ActivityRepository(db, Logic);
+            activityContext = new ActivityRepository(db, Logic, personInviteRepository ,organizedContext);
             controller = new ActivityController(personContext, activityContext);
 
             personContext = new PersonRepository(db);
             personInviteRepository = new PersonInviteRepository(db, personContext, activityContext);
             organizedContext = new PersonOrganizedActivityRepository(db, personContext, activityContext);
             Logic = new ActivityLogic(personInviteRepository, organizedContext, db);
-            activityContext = new ActivityRepository(db, Logic);
+            activityContext = new ActivityRepository(db, Logic, personInviteRepository, organizedContext);
             controller = new ActivityController(personContext, activityContext);
 
             TestPersonId1 = db.People.First().Id;
