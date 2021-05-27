@@ -123,5 +123,15 @@ namespace ActivityPlanner2.Tests
 
             Assert.IsType<NoContentResult>(NoContentObjectResult);
         }
+
+        [Fact]
+        public async Task DeleteApiTest()
+        {
+            var ActivityToDelete = await activityContext.GetActivityById(1);
+
+            controller.Delete(ActivityToDelete.Id);
+
+            Assert.DoesNotContain(db.Activities, a => a.Id == ActivityToDelete.Id);
+        }
     }
 }

@@ -13,10 +13,15 @@ namespace ActivityPlanner2.Data
     {
         ApplicationDbContext context;
         IActivityLogic Logic;
-        public ActivityRepository(ApplicationDbContext context, IActivityLogic Logic)
+        IPersonInviteRepository inviteContext;
+        IPersonOrganizedActivityRepository organizedContext;
+
+        public ActivityRepository(ApplicationDbContext context, IActivityLogic Logic, IPersonInviteRepository inviteContext, IPersonOrganizedActivityRepository organizedContext)
         {
             this.context = context;
             this.Logic = Logic;
+            this.inviteContext = inviteContext;
+            this.organizedContext = organizedContext;
         }
 
         public async Task<Activity> AddActivityFromActivity(Activity activity)
@@ -53,6 +58,10 @@ namespace ActivityPlanner2.Data
         public async Task DeleteActivity(int Id)
         {
             var activityToDelete = await GetActivityById(Id);
+
+            await inviteContext.DeleteInvitesByActivityId(activityToDelete.Id);
+
+            await organizedContext.DeleteOrganizedActivitiesByActivityId(activityToDelete.Id);
 
             context.Activities.Remove(activityToDelete);
             await context.SaveChangesAsync();
