@@ -170,7 +170,7 @@ namespace ActivityPlanner2.Tests
                 Organizers = new List<PersonOrganizedActivityDTO>() { new PersonOrganizedActivityDTO() { PersonId = TestPersonId1 } }
             };
 
-            await context.UpdateActivityFromDTO(TestActivityId1, activity);
+            await context.UpdateActivityFromDTO(activity.Id, activity);
 
             Assert.Contains(db.Activities, a => a == dbActivityForChecking);
         }

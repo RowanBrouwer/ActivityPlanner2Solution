@@ -33,7 +33,7 @@ namespace ActivityPlanner2.Data
                 .HasKey(pa => new { pa.OrganizerId, pa.OrganizedActivityId });
 
             modelBuilder.Entity<PersonInvites>()
-                .HasKey(pa => new { pa.PersonId, pa.ActivityId, pa.Accepted });
+                .HasKey(pa => new { pa.PersonId, pa.ActivityId});
 
             base.OnModelCreating(modelBuilder);
         }

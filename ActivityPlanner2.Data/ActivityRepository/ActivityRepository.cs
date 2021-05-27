@@ -93,13 +93,13 @@ namespace ActivityPlanner2.Data
 
         public async Task UpdateActivityFromDTO(int id, ActivityDTO value)
         {
-            Activity savedActivity = await GetActivityById(id);
+            var savedActivity = await GetActivityById(id);
 
             if (value.InvitedGuests != null)
             {
                 try
                 {
-                    savedActivity.InvitedGuests = await Logic.PersonInviteDtoListToPersonInviteList(value, id);
+                    savedActivity.InvitedGuests = await Logic.PersonInviteDtoListToPersonInviteList(value, value.Id);
                 }
                 catch (InvalidCastException ex)
                 {
@@ -111,7 +111,7 @@ namespace ActivityPlanner2.Data
             {
                 try
                 {
-                    savedActivity.Organizers = await Logic.OrganizersDtoListToOrganizerList(value, id);
+                    savedActivity.Organizers = await Logic.OrganizersDtoListToOrganizerList(value, value.Id);
                 }
                 catch (InvalidCastException ex)
                 {

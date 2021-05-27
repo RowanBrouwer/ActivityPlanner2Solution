@@ -1,6 +1,7 @@
 ﻿using ActivityPlanner2.Data.ServerModels;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -76,7 +77,13 @@ namespace ActivityPlanner2.Data
 
         public async Task UpdateInvite(PersonInvites updatedActivityData)
         {
-            DbContext.PersonActivities.Update(updatedActivityData);
+            var InviteToUpdate = DbContext.PersonActivities.Find(updatedActivityData.PersonId, updatedActivityData.ActivityId);
+
+            InviteToUpdate.Accepted = updatedActivityData.Accepted;
+            InviteToUpdate.Activity = await activityRepository.GetActivityById(updatedActivityData.ActivityId);
+            InviteToUpdate.Person = await PersonContext.GetPersonById(updatedActivityData.PersonId);
+
+            DbContext.PersonActivities.Update(InviteToUpdate);
             await DbContext.SaveChangesAsync();
         }
     }

@@ -77,6 +77,11 @@ namespace ActivityPlanner2.Data
 
         public async Task UpdateOrganizedActivities(PersonOrganizedActivity updatedActivityData)
         {
+            var OrganizerToUpdate = DbContext.PersonOrginizers.Find(updatedActivityData.OrganizerId, updatedActivityData.OrganizedActivityId);
+
+            OrganizerToUpdate.OrganizedActivity = await activityRepository.GetActivityById(updatedActivityData.OrganizedActivityId);
+            OrganizerToUpdate.Organizer = await PersonContext.GetPersonById(updatedActivityData.OrganizerId);
+
             DbContext.PersonOrginizers.Update(updatedActivityData);
             await DbContext.SaveChangesAsync();
         }

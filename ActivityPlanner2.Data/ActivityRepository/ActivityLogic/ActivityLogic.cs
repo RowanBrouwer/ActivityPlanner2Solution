@@ -24,21 +24,23 @@ namespace ActivityPlanner2.Data
         {
             var Organizers = new List<PersonOrganizedActivity>();
 
-            PersonOrganizedActivity invite;
-
             foreach (var personOrganizer in value.Organizers)
             {
-                if (await invitePersonContext.GetInvitesByActivityId(personOrganizer.ActivityId) != null)
+                personOrganizer.ActivityId = Id;
+
+                if (await organizeContext.GetOrganizedActivitiesByPersonIdAndActivityId(personOrganizer.PersonId, personOrganizer.ActivityId) != null)
                 {
-                    invite = (PersonOrganizedActivity)personOrganizer;
-                    invite.OrganizedActivityId = Id;
-                    await organizeContext.UpdateOrganizedActivities(invite);
-                }   
+                    var OrganizerToUpdate = (PersonOrganizedActivity)personOrganizer;
+                    await organizeContext.UpdateOrganizedActivities(OrganizerToUpdate);
+                }
+                else
+                {
+                    var OrganizerToAdd = (PersonOrganizedActivity)personOrganizer;
+                    db.PersonOrginizers.Add(OrganizerToAdd);
+                }
 
                 Organizers.Add((PersonOrganizedActivity)personOrganizer);
             }
-
-            db.PersonOrginizers.AddRange(Organizers);
 
             return Organizers;
         }
@@ -46,21 +48,25 @@ namespace ActivityPlanner2.Data
         public async Task<IEnumerable<PersonInvites>> PersonInviteDtoListToPersonInviteList(ActivityDTO value, int Id)
         {
             var InvitedPeople = new List<PersonInvites>();
-            PersonInvites invite;
 
             foreach (var personInvite in value.InvitedGuests)
             {
-                if (await invitePersonContext.GetInvitesByActivityId(personInvite.ActivityId) != null)
+                personInvite.ActivityId = Id;
+
+                if (await invitePersonContext.GetInviteByPersonIdAndActivityId(personInvite.PersonId, personInvite.ActivityId) != null)
                 {
-                    invite = (PersonInvites)personInvite;
-                    //invite.ActivityId = Id;
-                    await invitePersonContext.UpdateInvite(invite);
+                    var InviteToUpdate = (PersonInvites)personInvite;
+                    await invitePersonContext.UpdateInvite(InviteToUpdate);
+                }
+                else
+                {
+                    var invite = (PersonInvites)personInvite;
+                    db.PersonActivities.Add(invite);
                 }
 
                 InvitedPeople.Add((PersonInvites)personInvite);
-            }
 
-            db.PersonActivities.AddRange(InvitedPeople);
+            }
 
             return InvitedPeople;
         }
