@@ -40,13 +40,14 @@ namespace ActivityPlanner2.Server.Controllers
 
         // GET api/<PeopleController>/5
         [HttpGet("{name}")]
-        public async Task<ActionResult<BasePersonDTO>> GetPerson(string name)
+        public async Task<ActionResult<BasePersonDTO>> GetPersonByName(string userName)
         {
-            var result = await context.GetPersonByUserName(name);
+            var result = await context.GetPersonByUserName(userName);
 
             if (result == null)
             {
                 return NotFound();
+
             }
 
             return Ok((BasePersonDTO)result);

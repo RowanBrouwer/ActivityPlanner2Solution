@@ -53,9 +53,9 @@ namespace ActivityPlanner2.Tests
         }
 
         [Fact]
-        public async void GetPersonApiTest()
+        public async void GetPersonApiTestById()
         {
-            var okResult = await controller.GetPerson(TestPersonId1);
+            var okResult = await controller.GetPersonByName("Admin1@Admin1");
 
             Assert.IsType<OkObjectResult>(okResult.Result);
 
