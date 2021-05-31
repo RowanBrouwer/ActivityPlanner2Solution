@@ -23,7 +23,6 @@ namespace ActivityPlanner2.Tests
         readonly IPersonInviteRepository personInviteRepository;
         readonly IPersonOrganizedActivityRepository organizedContext;
         readonly IActivityRepository context;
-        readonly IActivityLogic logic;
 
         readonly string TestPersonId1;
         readonly string TestPersonId2;
@@ -37,16 +36,9 @@ namespace ActivityPlanner2.Tests
             manager = DbSetup.CreateUsermanager(db);
             DbSetup.Seed(manager, db);
             personContext = new PersonRepository(db);
-            personInviteRepository = new PersonInviteRepository(db, personContext, context);
-            organizedContext = new PersonOrganizedActivityRepository(db, personContext, context);
-            logic = new ActivityLogic(personInviteRepository, organizedContext, db);
-            context = new ActivityRepository(db, logic, personInviteRepository, organizedContext);
-
-            personContext = new PersonRepository(db);
-            personInviteRepository = new PersonInviteRepository(db, personContext, context);
-            organizedContext = new PersonOrganizedActivityRepository(db, personContext, context);
-            logic = new ActivityLogic(personInviteRepository, organizedContext, db);
-            context = new ActivityRepository(db, logic, personInviteRepository, organizedContext);
+            personInviteRepository = new PersonInviteRepository(db);
+            organizedContext = new PersonOrganizedActivityRepository(db);
+            context = new ActivityRepository(db, personInviteRepository, organizedContext);
 
             TestPersonId1 = db.People.First().Id;
             TestPersonId2 = db.People.Skip(1).First().Id;
@@ -170,7 +162,7 @@ namespace ActivityPlanner2.Tests
                 Organizers = new List<PersonOrganizedActivityDTO>() { new PersonOrganizedActivityDTO() { PersonId = TestPersonId1 } }
             };
 
-            await context.UpdateActivityFromDTO(activity.Id, activity);
+            await context.UpdateActivityFromDTO(dbActivityForChecking.Id, activity);
 
             Assert.Contains(db.Activities, a => a == dbActivityForChecking);
         }

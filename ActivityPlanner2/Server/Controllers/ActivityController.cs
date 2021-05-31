@@ -99,6 +99,8 @@ namespace ActivityPlanner2.Server.Controllers
                 return NotFound();
             }
 
+            await activityContext.UpdateActivityFromDTO(id, value);
+
             return NoContent();
         }
 

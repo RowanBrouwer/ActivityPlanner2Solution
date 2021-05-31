@@ -12,19 +12,15 @@ namespace ActivityPlanner2.Data
     public class PersonInviteRepository : IPersonInviteRepository
     {
         ApplicationDbContext DbContext;
-        IPersonRepository PersonContext;
-        IActivityRepository activityRepository;
 
-        public PersonInviteRepository(ApplicationDbContext DbContext, IPersonRepository PersonContext, IActivityRepository activityRepository)
+        public PersonInviteRepository(ApplicationDbContext DbContext)
         {
             this.DbContext = DbContext;
-            this.PersonContext = PersonContext;
-            this.activityRepository = activityRepository;
         }
         public async Task AddInvite(PersonInvites invite)
         {
-            invite.Activity = await activityRepository.GetActivityById(invite.ActivityId);
-            invite.Person = await PersonContext.GetPersonById(invite.PersonId);
+            invite.Activity = await DbContext.Activities.FindAsync(invite.ActivityId);
+            invite.Person = await DbContext.People.FindAsync(invite.PersonId);
 
             await DbContext.PersonActivities.AddAsync(invite);
             DbContext.SaveChanges();
@@ -80,8 +76,8 @@ namespace ActivityPlanner2.Data
             var InviteToUpdate = DbContext.PersonActivities.Find(updatedActivityData.PersonId, updatedActivityData.ActivityId);
 
             InviteToUpdate.Accepted = updatedActivityData.Accepted;
-            InviteToUpdate.Activity = await activityRepository.GetActivityById(updatedActivityData.ActivityId);
-            InviteToUpdate.Person = await PersonContext.GetPersonById(updatedActivityData.PersonId);
+            InviteToUpdate.Activity = await DbContext.Activities.FindAsync(updatedActivityData.ActivityId);
+            InviteToUpdate.Person = await DbContext.People.FindAsync(updatedActivityData.PersonId);
 
             DbContext.PersonActivities.Update(InviteToUpdate);
             await DbContext.SaveChangesAsync();

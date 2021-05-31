@@ -12,14 +12,12 @@ namespace ActivityPlanner2.Data
     public class ActivityRepository : IActivityRepository
     {
         ApplicationDbContext context;
-        IActivityLogic Logic;
         IPersonInviteRepository inviteContext;
         IPersonOrganizedActivityRepository organizedContext;
 
-        public ActivityRepository(ApplicationDbContext context, IActivityLogic Logic, IPersonInviteRepository inviteContext, IPersonOrganizedActivityRepository organizedContext)
+        public ActivityRepository(ApplicationDbContext context, IPersonInviteRepository inviteContext, IPersonOrganizedActivityRepository organizedContext)
         {
             this.context = context;
-            this.Logic = Logic;
             this.inviteContext = inviteContext;
             this.organizedContext = organizedContext;
         }
@@ -46,9 +44,9 @@ namespace ActivityPlanner2.Data
 
             ActivityToAdd = await AddActivityFromActivity(ActivityToAdd);
 
-            ActivityToAdd.InvitedGuests = await Logic.PersonInviteDtoListToPersonInviteList(NewActivityToAdd, ActivityToAdd.Id);
+            ActivityToAdd.InvitedGuests = await PersonInviteDtoListToPersonInviteList(NewActivityToAdd, ActivityToAdd.Id);
 
-            ActivityToAdd.Organizers = await Logic.OrganizersDtoListToOrganizerList(NewActivityToAdd, ActivityToAdd.Id);
+            ActivityToAdd.Organizers = await OrganizersDtoListToOrganizerList(NewActivityToAdd, ActivityToAdd.Id);
 
             await UpdateActivityFromActivity(ActivityToAdd);
 
@@ -115,7 +113,7 @@ namespace ActivityPlanner2.Data
             {
                 try
                 {
-                    savedActivity.InvitedGuests = await Logic.PersonInviteDtoListToPersonInviteList(value, value.Id);
+                    savedActivity.InvitedGuests = await PersonInviteDtoListToPersonInviteList(value, savedActivity.Id);
                 }
                 catch (InvalidCastException ex)
                 {
@@ -127,7 +125,7 @@ namespace ActivityPlanner2.Data
             {
                 try
                 {
-                    savedActivity.Organizers = await Logic.OrganizersDtoListToOrganizerList(value, value.Id);
+                    savedActivity.Organizers = await OrganizersDtoListToOrganizerList(value, savedActivity.Id);
                 }
                 catch (InvalidCastException ex)
                 {
@@ -138,6 +136,58 @@ namespace ActivityPlanner2.Data
             context.Update(savedActivity);
 
             await context.SaveChangesAsync();
+        }
+
+
+        public async Task<IEnumerable<PersonOrganizedActivity>> OrganizersDtoListToOrganizerList(ActivityDTO value, int Id)
+        {
+            var Organizers = new List<PersonOrganizedActivity>();
+
+            foreach (var personOrganizer in value.Organizers)
+            {
+                personOrganizer.ActivityId = Id;
+
+                if (await organizedContext.GetOrganizedActivitiesByPersonIdAndActivityId(personOrganizer.PersonId, personOrganizer.ActivityId) != null)
+                {
+                    var OrganizerToUpdate = (PersonOrganizedActivity)personOrganizer;
+                    await organizedContext.UpdateOrganizedActivities(OrganizerToUpdate);
+                }
+                else
+                {
+                    var OrganizerToAdd = (PersonOrganizedActivity)personOrganizer;
+                    context.PersonOrginizers.Add(OrganizerToAdd);
+                }
+
+                Organizers.Add((PersonOrganizedActivity)personOrganizer);
+            }
+
+            return Organizers;
+        }
+
+        public async Task<IEnumerable<PersonInvites>> PersonInviteDtoListToPersonInviteList(ActivityDTO value, int Id)
+        {
+            var InvitedPeople = new List<PersonInvites>();
+
+            foreach (var personInvite in value.InvitedGuests)
+            {
+                personInvite.ActivityId = Id;
+
+                if (await inviteContext.GetInviteByPersonIdAndActivityId(personInvite.PersonId, personInvite.ActivityId) != null)
+                {
+                    var InviteToUpdate = (PersonInvites)personInvite;
+                    await inviteContext.UpdateInvite(InviteToUpdate);
+                }
+                else
+                {
+                    var invite = (PersonInvites)personInvite;
+                    context.PersonActivities.Add(invite);
+                }
+
+                InvitedPeople.Add((PersonInvites)personInvite);
+
+            }
+
+            return InvitedPeople;
         }
     }
 }

@@ -11,20 +11,16 @@ namespace ActivityPlanner2.Data
     public class PersonOrganizedActivityRepository : IPersonOrganizedActivityRepository
     {
         ApplicationDbContext DbContext;
-        IPersonRepository PersonContext;
-        IActivityRepository activityRepository;
 
-        public PersonOrganizedActivityRepository(ApplicationDbContext DbContext, IPersonRepository PersonContext, IActivityRepository activityRepository)
+        public PersonOrganizedActivityRepository(ApplicationDbContext DbContext)
         {
             this.DbContext = DbContext;
-            this.PersonContext = PersonContext;
-            this.activityRepository = activityRepository;
         }
 
         public async Task AddOrganizedActivities(PersonOrganizedActivity invite)
         {
-            invite.OrganizedActivity = await activityRepository.GetActivityById(invite.OrganizedActivityId);
-            invite.Organizer = await PersonContext.GetPersonById(invite.OrganizerId);
+            invite.OrganizedActivity = await DbContext.Activities.FindAsync(invite.OrganizedActivityId);
+            invite.Organizer = await DbContext.People.FindAsync(invite.OrganizerId);
 
             await DbContext.PersonOrginizers.AddAsync(invite);
             DbContext.SaveChanges();
@@ -79,8 +75,8 @@ namespace ActivityPlanner2.Data
         {
             var OrganizerToUpdate = DbContext.PersonOrginizers.Find(updatedActivityData.OrganizerId, updatedActivityData.OrganizedActivityId);
 
-            OrganizerToUpdate.OrganizedActivity = await activityRepository.GetActivityById(updatedActivityData.OrganizedActivityId);
-            OrganizerToUpdate.Organizer = await PersonContext.GetPersonById(updatedActivityData.OrganizerId);
+            OrganizerToUpdate.OrganizedActivity = await DbContext.Activities.FindAsync(updatedActivityData.OrganizedActivityId);
+            OrganizerToUpdate.Organizer = await DbContext.People.FindAsync(updatedActivityData.OrganizerId);
 
             DbContext.PersonOrginizers.Update(updatedActivityData);
             await DbContext.SaveChangesAsync();

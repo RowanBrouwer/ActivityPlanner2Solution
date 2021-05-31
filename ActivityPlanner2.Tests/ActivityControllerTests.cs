@@ -28,7 +28,6 @@ namespace ActivityPlanner2.Tests
         IActivityRepository activityContext;
         IPersonInviteRepository personInviteRepository;
         IPersonOrganizedActivityRepository organizedContext;
-        IActivityLogic Logic;
         readonly string TestPersonId1;
         readonly string TestPersonId2;
         readonly int TestActivityId1;
@@ -40,17 +39,9 @@ namespace ActivityPlanner2.Tests
             DbSetup.Seed(manager, db);
 
             personContext = new PersonRepository(db);
-            personInviteRepository = new PersonInviteRepository(db, personContext, activityContext);
-            organizedContext = new PersonOrganizedActivityRepository(db, personContext, activityContext);
-            Logic = new ActivityLogic(personInviteRepository, organizedContext, db);
-            activityContext = new ActivityRepository(db, Logic, personInviteRepository ,organizedContext);
-            controller = new ActivityController(personContext, activityContext);
-
-            personContext = new PersonRepository(db);
-            personInviteRepository = new PersonInviteRepository(db, personContext, activityContext);
-            organizedContext = new PersonOrganizedActivityRepository(db, personContext, activityContext);
-            Logic = new ActivityLogic(personInviteRepository, organizedContext, db);
-            activityContext = new ActivityRepository(db, Logic, personInviteRepository, organizedContext);
+            personInviteRepository = new PersonInviteRepository(db);
+            organizedContext = new PersonOrganizedActivityRepository(db);
+            activityContext = new ActivityRepository(db, personInviteRepository ,organizedContext);
             controller = new ActivityController(personContext, activityContext);
 
             TestPersonId1 = db.People.First().Id;
