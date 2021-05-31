@@ -54,12 +54,10 @@ namespace ActivityPlanner2.Server.Controllers
         }
 
         // GET api/<InvitedController>/5
-        [HttpGet("{name}")]
-        public async Task<ActionResult<IEnumerable<ActivityDTO>>> Get(string name)
+        [HttpGet("{userId}")]
+        public async Task<ActionResult<IEnumerable<ActivityDTO>>> Get(string userId)
         {
-            var person = await personContext.GetPersonByUserName(name);
-
-            var result = await activityContext.GetListOfInvitedActivitiesByPersonId(person.Id);
+            var result = await activityContext.GetListOfInvitedActivitiesByPersonId(userId);
 
             if (result == null)
             {

@@ -61,11 +61,11 @@ namespace ActivityPlanner2.Client.ClientServices
         }
 
 
-        public async Task<IEnumerable<ClientActivity>> GetlistOfInvitedActivitiesByPerson(string name)
+        public async Task<IEnumerable<ClientActivity>> GetlistOfInvitedActivitiesByPerson(string userId)
         {
-            logger.LogInformation($"Calling API-PUT for Person {name} at {DateTime.Now.ToShortTimeString()}");
+            logger.LogInformation($"Calling API-PUT for Person {userId} at {DateTime.Now.ToShortTimeString()}");
 
-            var result = await Http.GetFromJsonAsync<IEnumerable<ActivityDTO>>($"api/invited/{name}");
+            var result = await Http.GetFromJsonAsync<IEnumerable<ActivityDTO>>($"api/invited/{userId}");
 
             List<ClientActivity> activityList = new List<ClientActivity>();
 

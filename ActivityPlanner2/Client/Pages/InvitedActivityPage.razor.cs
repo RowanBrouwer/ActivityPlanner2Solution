@@ -18,12 +18,12 @@ namespace ActivityPlanner2.Client.Pages
             var state = await AuthState.GetAuthenticationStateAsync();
             CurrentUser = await Http.GeCurrentPersonByUserName(state.User.Identity.Name);
 
-            await loadData(CurrentUser.UserName);
+            await loadData(CurrentUser.Id);
         }
             
-        private async Task loadData(string userName)
+        private async Task loadData(string userId)
         {    
-           InvitedActivities = await Http.GetlistOfInvitedActivitiesByPerson(userName);
+           InvitedActivities = await Http.GetlistOfInvitedActivitiesByPerson(userId);
             StateHasChanged();
         }
 
