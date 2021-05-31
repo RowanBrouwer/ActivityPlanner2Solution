@@ -9,6 +9,7 @@ namespace ActivityPlanner2.Client.ClientModels
     public class ClientBasePerson
     {
         public string Id { get; set; }
+        public string UserName { get; set; }
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string LastName { get; set; }
@@ -18,6 +19,7 @@ namespace ActivityPlanner2.Client.ClientModels
             return new()
             {
                 Id = person.Id,
+                UserName = person.UserName,
                 FirstName = person.FirstName,
                 MiddleName = person.MiddleName,
                 LastName = person.LastName
@@ -29,6 +31,7 @@ namespace ActivityPlanner2.Client.ClientModels
             return new()
             {
                 Id = person.Id,
+                UserName = person.UserName,
                 FirstName = person.FirstName,
                 MiddleName = person.MiddleName,
                 LastName = person.LastName

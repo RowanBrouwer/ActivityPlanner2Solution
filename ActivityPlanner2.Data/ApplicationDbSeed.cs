@@ -58,7 +58,10 @@ public class ApplicationDbSeed
                         IdentityResult result = userManager.CreateAsync(user, "!Admin123").Result;
                     }
                 }
-                db.AddRange(people);         
+                else
+                {
+                    db.AddRange(people);
+                }     
 
                 db.SaveChanges();
             }

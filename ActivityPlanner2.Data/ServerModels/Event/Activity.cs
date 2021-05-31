@@ -39,10 +39,10 @@ namespace ActivityPlanner2.Data.ServerModels
             return new()
             {
                 Id = activity.Id,
-                InvitedGuests = activity.InvitedGuests?.Cast<PersonInvitesDTO>(),
-                Organizers = activity.Organizers?.Cast<PersonOrganizedActivityDTO>(),
-                GuestsThatAccepted = activity.GuestsThatAccepted()?.Cast<BasePersonDTO>(),
-                GuestsThatDeclined = activity.GuestsThatDeclined()?.Cast<BasePersonDTO>(),
+                InvitedGuests = activity.InvitedGuests == null ? null : activity.InvitedGuests.Cast<PersonInvitesDTO>(),
+                Organizers = activity.Organizers == null ? null : activity.Organizers.Cast<PersonOrganizedActivityDTO>(),
+                GuestsThatAccepted = activity.GuestsThatAccepted() == null ? null : activity.GuestsThatAccepted().Cast<BasePersonDTO>(),
+                GuestsThatDeclined = activity.GuestsThatDeclined() == null ? null : activity.GuestsThatDeclined().Cast<BasePersonDTO>(),
                 ActivityName = activity.ActivityName,
                 DateOfDeadline = activity.DateOfDeadline.ToString(),
                 DateOfEvent = activity.DateOfEvent.ToString(),

@@ -39,10 +39,10 @@ namespace ActivityPlanner2.Server.Controllers
         }
 
         // GET api/<PeopleController>/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<BasePersonDTO>> GetPerson(string id)
+        [HttpGet("{name}")]
+        public async Task<ActionResult<BasePersonDTO>> GetPerson(string name)
         {
-            var result = await context.GetPersonById(id);
+            var result = await context.GetPersonByUserName(name);
 
             if (result == null)
             {

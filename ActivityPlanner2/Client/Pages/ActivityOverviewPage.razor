@@ -1,0 +1,36 @@
+﻿@page "/Activities"
+@inherits ActivityOverviewPageModel
+
+<div class="col-auto" style="padding:4px,10px,2px,10px">
+    <div class="row">
+        <div class="col border border-dark col-4">
+            Id
+        </div>
+        <div class="col border border-dark col-2">
+            Email
+        </div>
+        <div class="col border border-dark col-2">
+            FirstName
+        </div>
+        <div class="col border border-dark col-2">
+            LastName
+        </div>
+    </div>
+    @foreach (var activity in clientActivities)
+    {
+        <div class="row">
+            <div class="col border border-dark col-4">
+                @activity.Id
+            </div>
+            <div class="col border border-dark col-2">
+                @activity.ActivityName
+            </div>
+            <div class="col border border-dark col-2">
+                @activity.DateOfEvent
+            </div>
+            <div class="col border border-dark col-2">
+                @activity.Describtion
+            </div>
+        </div>
+    }
+</div>

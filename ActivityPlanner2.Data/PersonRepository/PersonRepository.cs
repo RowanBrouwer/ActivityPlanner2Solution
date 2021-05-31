@@ -57,6 +57,11 @@ namespace ActivityPlanner2.Data
             return await context.People.FindAsync(id);
         }
 
+        public async Task<Person> GetPersonByUserName(string name)
+        {
+            return await Task.FromResult(context.People.First(p => p.UserName == name));
+        }
+
         public async Task UpdatePerson(BasePersonDTO updatedPersonData)
         {
             var PersonFromDb = await GetPersonById(updatedPersonData.Id);

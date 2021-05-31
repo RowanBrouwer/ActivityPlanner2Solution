@@ -9,9 +9,10 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using ActivityPlanner2;
 using ActivityPlanner2.Client.ClientModels;
+using ActivityPlanner2.Shared.DTOs;
 
 namespace ActivityPlanner2.Client.ClientServices
-{ 
+{
     public class HttpService : IHttpService, IDisposable
     {
         readonly HttpClient Http;
@@ -32,11 +33,11 @@ namespace ActivityPlanner2.Client.ClientServices
             return result;
         }
 
-        public async Task<ClientBasePerson> GetPersonById(string Id)
+        public async Task<ClientBasePerson> GeCurrentPersonByUserName(string name)
         {
-            logger.LogInformation($"Calling API-GET for Person {Id} at {DateTime.Now.ToShortTimeString()}");
+            logger.LogInformation($"Calling API-GET for Person {name} at {DateTime.Now.ToShortTimeString()}");
 
-            var result = await Http.GetFromJsonAsync<ClientBasePerson>(StringCollection.Api_PeopleControler_Uri + $"/{Id}");
+            var result = await Http.GetFromJsonAsync<ClientBasePerson>(StringCollection.Api_PeopleControler_Uri + $"/{name}");
 
             return result;
         }
@@ -60,13 +61,36 @@ namespace ActivityPlanner2.Client.ClientServices
         }
 
 
-        public async Task<IEnumerable<ClientActivity>> GetlistOfInvitedActivitiesByPerson(string id)
+        public async Task<IEnumerable<ClientActivity>> GetlistOfInvitedActivitiesByPerson(string name)
         {
-            logger.LogInformation($"Calling API-PUT for Person {id} at {DateTime.Now.ToShortTimeString()}");
+            logger.LogInformation($"Calling API-PUT for Person {name} at {DateTime.Now.ToShortTimeString()}");
 
-            var result = await Http.GetFromJsonAsync<IEnumerable<ClientActivity>>($"api/Invited{id}");
+            var result = await Http.GetFromJsonAsync<IEnumerable<ActivityDTO>>($"api/invited/{name}");
 
-            return result.Cast<ClientActivity>();
+            List<ClientActivity> activityList = new List<ClientActivity>();
+
+            foreach (var activity in result)
+            {
+                activityList.Add((ClientActivity)activity);
+            }
+
+            return activityList;
+        }
+
+        public async Task<IEnumerable<ClientActivity>> GetlistOfActivities()
+        {
+            logger.LogInformation($"Calling API-GET for Activity List at {DateTime.Now.ToShortTimeString()}");
+
+            var result = await Http.GetFromJsonAsync<IEnumerable<ActivityDTO>>("api/Activity");
+
+            List<ClientActivity> activityList = new List<ClientActivity>();
+
+            foreach (var activity in result)
+            {
+                activityList.Add((ClientActivity)activity);
+            }
+
+            return activityList;
         }
 
         public void Dispose()

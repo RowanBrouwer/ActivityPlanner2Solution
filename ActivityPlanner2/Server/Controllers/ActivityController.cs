@@ -24,6 +24,7 @@ namespace ActivityPlanner2.Server.Controllers
             this.personContext = personContext;
             this.activityContext = activityContext;
         }
+
         // GET: api/<ActivityController>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ActivityDTO>>> Get()
@@ -37,7 +38,12 @@ namespace ActivityPlanner2.Server.Controllers
 
             try
             {
-                IEnumerable<ActivityDTO> castResult = result.Cast<ActivityDTO>();
+                List<ActivityDTO> castResult = new List<ActivityDTO>();
+
+                foreach (var activity in result)
+                {
+                    castResult.Add((ActivityDTO)activity);
+                }
 
                 return Ok(castResult);
             }

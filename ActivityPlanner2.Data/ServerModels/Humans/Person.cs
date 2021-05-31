@@ -32,6 +32,7 @@ namespace ActivityPlanner2.Data.ServerModels
             return new()
             {
                 Id = person.Id,
+                UserName = person.UserName,
                 FirstName = person.FirstName,
                 MiddleName = person.MiddleName,
                 LastName = person.LastName,
@@ -43,6 +44,7 @@ namespace ActivityPlanner2.Data.ServerModels
             return new()
             {
                 Id = person.Id,
+                UserName = person.UserName,
                 FirstName = person.FirstName,
                 MiddleName = person.MiddleName,
                 LastName = person.LastName,

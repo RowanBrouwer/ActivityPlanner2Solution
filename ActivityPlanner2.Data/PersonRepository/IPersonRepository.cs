@@ -17,5 +17,6 @@ namespace ActivityPlanner2.Data
         Task AddPerson(BasePersonDTO NewPersonToAdd);
         Task DeletePerson(string id);
         Task UpdatePerson(BasePersonDTO updatedPersonData);
+        Task<Person> GetPersonByUserName(string name);
     }
 }

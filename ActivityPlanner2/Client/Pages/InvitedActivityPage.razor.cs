@@ -12,18 +12,18 @@ namespace ActivityPlanner2.Client.Pages
     [Authorize]
     public class InvitedActivityPageModel : BasePageComponent
     {
-
         public IEnumerable<ClientActivity> InvitedActivities { get; set; } = new List<ClientActivity>();
         protected override async Task OnInitializedAsync()
         {
-            await Task.FromResult(loadData());
-        }
-
-        private async Task loadData()
-        {
             var state = await AuthState.GetAuthenticationStateAsync();
+            CurrentUser = await Http.GeCurrentPersonByUserName(state.User.Identity.Name);
 
-           // InvitedActivities = await Http.GetlistOfInvitedActivitiesByPerson();
+            await loadData(CurrentUser.UserName);
+        }
+            
+        private async Task loadData(string userName)
+        {    
+           InvitedActivities = await Http.GetlistOfInvitedActivitiesByPerson(userName);
             StateHasChanged();
         }
 

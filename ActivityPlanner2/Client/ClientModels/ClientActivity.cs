@@ -28,10 +28,10 @@ namespace ActivityPlanner2.Client.ClientModels
             return new()
             {
                 Id = activity.Id,
-                InvitedGuests = activity.InvitedGuests?.Cast<ClientPersonInvites>(),
-                Organizers = activity.Organizers?.Cast<ClientPersonOrganizedActivity>(),
-                GuestsThatAccepted = activity.GuestsThatAccepted?.Cast<ClientBasePerson>(),
-                GuestsThatDeclined = activity.GuestsThatDeclined?.Cast<ClientBasePerson>(),
+                InvitedGuests = activity.InvitedGuests == null ? null : activity.InvitedGuests.Cast<ClientPersonInvites>(),
+                Organizers = activity.Organizers == null ? null : activity.Organizers.Cast<ClientPersonOrganizedActivity>(),
+                GuestsThatAccepted = activity.GuestsThatAccepted == null ? null : activity.GuestsThatAccepted.Cast<ClientBasePerson>(),
+                GuestsThatDeclined = activity.GuestsThatDeclined == null ? null : activity.GuestsThatDeclined.Cast<ClientBasePerson>(),
                 ActivityName = activity.ActivityName,
                 DateOfDeadline = activity.DateOfDeadline.StringToNullableDateTime(),
                 DateOfEvent = activity.DateOfEvent.StringToNullableDateTime(),
@@ -44,10 +44,10 @@ namespace ActivityPlanner2.Client.ClientModels
             return new()
             {
                 Id = activity.Id,
-                InvitedGuests = activity.InvitedGuests?.Cast<PersonInvitesDTO>(),
-                Organizers = activity.InvitedGuests?.Cast<PersonOrganizedActivityDTO>(),
-                GuestsThatAccepted = activity.GuestsThatAccepted?.Cast<BasePersonDTO>(),
-                GuestsThatDeclined = activity.GuestsThatDeclined?.Cast<BasePersonDTO>(),
+                InvitedGuests = activity.InvitedGuests == null ? null : activity.InvitedGuests.Cast<PersonInvitesDTO>(),
+                Organizers = activity.Organizers == null ? null : activity.Organizers.Cast<PersonOrganizedActivityDTO>(),
+                GuestsThatAccepted = activity.GuestsThatAccepted == null ? null : activity.GuestsThatAccepted.Cast<BasePersonDTO>(),
+                GuestsThatDeclined = activity.GuestsThatDeclined == null ? null : activity.GuestsThatDeclined.Cast<BasePersonDTO>(),
                 ActivityName = activity.ActivityName,
                 DateOfDeadline = activity.DateOfDeadline.ToString(),
                 DateOfEvent = activity.DateOfEvent.ToString(),

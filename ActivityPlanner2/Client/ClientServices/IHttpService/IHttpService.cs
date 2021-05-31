@@ -12,7 +12,8 @@ namespace ActivityPlanner2.Client.ClientServices
     {
         public Task<IEnumerable<ClientBasePerson>> GetListOfPeople();
         public Task<IEnumerable<ClientActivity>> GetlistOfInvitedActivitiesByPerson(string id);
-        public Task<ClientBasePerson> GetPersonById(string Id);
+        public Task<IEnumerable<ClientActivity>> GetlistOfActivities();
+        public Task<ClientBasePerson> GeCurrentPersonByUserName(string name);
         public Task<HttpResponseMessage> AddPerson(ClientBasePerson person);
         public Task<HttpResponseMessage> UpdateVisitor(ClientBasePerson person);
         public void Dispose();

@@ -33,10 +33,7 @@ namespace ActivityPlanner2.Client
 
             builder.Services.AddLogging(builder =>
             {
-                builder.AddBrowserConsole().SetMinimumLevel(LogLevel.Trace);
-                builder.AddFilter("System.Net.Http", LogLevel.Information);
-                builder.AddFilter("Microsoft.AspNetCore.Components.WebAssembly.Authentication", LogLevel.Information);
-                builder.AddFilter("Microsoft.AspNetCore.Components.WebAssembly.Hosting", LogLevel.Information);
+                builder.AddBrowserConsole().SetMinimumLevel(LogLevel.Information);
             });
 
             await builder.Build().RunAsync();

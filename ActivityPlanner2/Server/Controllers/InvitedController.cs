@@ -17,10 +17,12 @@ namespace ActivityPlanner2.Server.Controllers
     {
         IActivityRepository activityContext;
         IPersonInviteRepository inviteContext;
-        public InvitedController(IActivityRepository activityContext, IPersonInviteRepository inviteContext)
+        IPersonRepository personContext;
+        public InvitedController(IActivityRepository activityContext, IPersonInviteRepository inviteContext, IPersonRepository personContext)
         {
             this.activityContext = activityContext;
             this.inviteContext = inviteContext;
+            this.personContext = personContext;
         }
 
         // GET: api/<InvitedController>
@@ -34,18 +36,48 @@ namespace ActivityPlanner2.Server.Controllers
                 return NotFound();
             }
 
+            try
+            {
+                var castResult = new List<ActivityDTO>();
+
+                foreach (var activity in result)
+                {
+                    castResult.Add((ActivityDTO)activity);
+                }
+            }
+            catch (InvalidCastException ex)
+            {
+                Console.WriteLine(ex);
+            }
+
             return Ok();
         }
 
         // GET api/<InvitedController>/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<ActivityDTO>>> Get(string id)
+        [HttpGet("{name}")]
+        public async Task<ActionResult<IEnumerable<ActivityDTO>>> Get(string name)
         {
-            var result = await activityContext.GetListOfInvitedActivitiesByPersonId(id);
+            var person = await personContext.GetPersonByUserName(name);
+
+            var result = await activityContext.GetListOfInvitedActivitiesByPersonId(person.Id);
 
             if (result == null)
             {
                 return NotFound();
+            }
+
+            try
+            {
+                var castResult = new List<ActivityDTO>();
+
+                foreach (var activity in result)
+                {
+                    castResult.Add((ActivityDTO)activity);
+                }
+            }
+            catch (InvalidCastException ex)
+            {
+                Console.WriteLine(ex);
             }
 
             return Ok(result);
