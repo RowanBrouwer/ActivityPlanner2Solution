@@ -13,7 +13,6 @@ namespace ActivityPlanner2.Client.Pages
     [Authorize]
     public class InvitedActivityPageModel : BasePageComponent
     {
-        [CascadingParameter] Task<AuthenticationState> authenticationStateTask { get; set; }
         public IEnumerable<ClientActivity> InvitedActivities { get; set; } = new List<ClientActivity>();
         protected override async Task OnInitializedAsync()
         {
