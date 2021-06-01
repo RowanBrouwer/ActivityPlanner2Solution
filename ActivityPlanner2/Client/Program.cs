@@ -1,5 +1,6 @@
 using ActivityPlanner2.Client.ClientServices;
 using Blazor.Extensions.Logging;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.AspNetCore.Identity;

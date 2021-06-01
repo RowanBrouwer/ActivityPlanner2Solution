@@ -1,6 +1,7 @@
 ﻿using ActivityPlanner2.Client.ClientModels;
 using ActivityPlanner2.Client.Components;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using System;
 using System.Collections.Generic;
@@ -12,13 +13,15 @@ namespace ActivityPlanner2.Client.Pages
     [Authorize]
     public class InvitedActivityPageModel : BasePageComponent
     {
+        [CascadingParameter] Task<AuthenticationState> authenticationStateTask { get; set; }
         public IEnumerable<ClientActivity> InvitedActivities { get; set; } = new List<ClientActivity>();
         protected override async Task OnInitializedAsync()
         {
-            var state = await AuthState.GetAuthenticationStateAsync();
-            CurrentUser = await Http.GeCurrentPersonByUserName(state.User.Identity.Name);
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var authUser = authState.User;
+            var user = await Http.GetCurrentPersonByUserName(authUser.Identity.Name);
 
-            await loadData(CurrentUser.Id);
+            await loadData(user.Id);
         }
             
         private async Task loadData(string userId)
@@ -26,6 +29,5 @@ namespace ActivityPlanner2.Client.Pages
            InvitedActivities = await Http.GetlistOfInvitedActivitiesByPerson(userId);
             StateHasChanged();
         }
-
     }
 }

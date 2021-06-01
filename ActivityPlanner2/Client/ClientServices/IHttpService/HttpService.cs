@@ -33,7 +33,7 @@ namespace ActivityPlanner2.Client.ClientServices
             return result;
         }
 
-        public async Task<ClientBasePerson> GeCurrentPersonByUserName(string name)
+        public async Task<ClientBasePerson> GetCurrentPersonByUserName(string name)
         {
             logger.LogInformation($"Calling API-GET for Person {name} at {DateTime.Now.ToShortTimeString()}");
 

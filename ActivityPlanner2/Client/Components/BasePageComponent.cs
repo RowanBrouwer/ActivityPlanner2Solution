@@ -3,6 +3,7 @@ using ActivityPlanner2.Client.ClientModels;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using System;
+using Microsoft.AspNetCore.Http;
 
 namespace ActivityPlanner2.Client.Components
 {
@@ -13,7 +14,7 @@ namespace ActivityPlanner2.Client.Components
         [Inject]
         protected NavigationManager NavManager { get; set; }
         [Inject]
-        protected AuthenticationStateProvider AuthState { get; set; }
+        protected AuthenticationStateProvider AuthenticationStateProvider { get; set; }
         protected ClientBasePerson CurrentUser { get; set; }
     }
 }
