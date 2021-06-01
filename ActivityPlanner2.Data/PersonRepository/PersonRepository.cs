@@ -60,6 +60,7 @@ namespace ActivityPlanner2.Data
         public async Task<Person> GetPersonByUserName(string name)
         {
             var result = context.People.First(p => p.UserName == name);
+
             return await Task.FromResult(result);
         }
 

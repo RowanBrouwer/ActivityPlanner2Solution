@@ -1,0 +1,42 @@
+﻿@page "/People/Overview"
+@inherits PeopleOverviewPageModel
+
+<h3>PeopleOverviewPage</h3>
+
+<div class="col-auto" style="padding:4px,10px,2px,10px">
+    <div class="row">
+        <div class="col border border-dark col-4">
+            Id
+        </div>
+        <div class="col border border-dark col-2">
+            Email
+        </div>
+        <div class="col border border-dark col-2">
+            FirstName
+        </div>
+        <div class="col border border-dark col-2">
+            LastName
+        </div>
+    </div>
+    @foreach (var person in LoadedUsers)
+    {
+        <div class="row">
+            <div class="col border border-dark col-4">
+                @person.Id
+            </div>
+            <div class="col border border-dark col-2">
+                @person.FirstName
+            </div>
+            <div class="col border border-dark col-2">
+                @person.MiddleName
+            </div>
+            <div class="col border border-dark col-2">
+                @person.LastName
+            </div>
+            <button class="col border border-dark col-2" @onclick="@(() => RedirectToDetails(person.Id))">
+                Details
+            </button>
+
+        </div>
+    }
+</div>

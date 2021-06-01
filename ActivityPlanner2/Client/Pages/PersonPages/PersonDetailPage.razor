@@ -1,7 +1,8 @@
-﻿@page "/PeopleOverview"
-@inherits PeopleOverviewPageModel
+﻿@page "/Person/Detail/{Id?}"
+@inherits PersonDetailPageModel
 
-<h3>PeopleOverviewPage</h3>
+<h3>Details</h3>
+
 
 <div class="col-auto" style="padding:4px,10px,2px,10px">
     <div class="row">
@@ -9,30 +10,32 @@
             Id
         </div>
         <div class="col border border-dark col-2">
-            Email
+            First name
         </div>
         <div class="col border border-dark col-2">
-            FirstName
+            Middle name
         </div>
         <div class="col border border-dark col-2">
-            LastName
+            Last name
         </div>
     </div>
-    @foreach (var person in LoadedUsers)
+    @if (CurrentUser != null)
     {
         <div class="row">
             <div class="col border border-dark col-4">
-                @person.Id
+                @CurrentUser.Id
             </div>
             <div class="col border border-dark col-2">
-                @person.FirstName
+                @CurrentUser.FirstName
             </div>
             <div class="col border border-dark col-2">
-                @person.MiddleName
+                @CurrentUser.MiddleName
             </div>
             <div class="col border border-dark col-2">
-                @person.LastName
+                @CurrentUser.LastName
             </div>
+
         </div>
+
     }
 </div>

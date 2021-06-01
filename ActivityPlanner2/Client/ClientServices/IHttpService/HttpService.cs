@@ -28,7 +28,7 @@ namespace ActivityPlanner2.Client.ClientServices
         {
             logger.LogInformation($"Calling API-GET for People List at {DateTime.Now.ToShortTimeString()}");
 
-            var result = await Http.GetFromJsonAsync<IEnumerable<ClientBasePerson>>(StringCollection.Api_PeopleControler_Uri);
+            var result = await Http.GetFromJsonAsync<IEnumerable<ClientBasePerson>>(StringCollection.Api_PeopleControler_Uri + "/GetAllPeople");
 
             return result;
         }
@@ -37,7 +37,16 @@ namespace ActivityPlanner2.Client.ClientServices
         {
             logger.LogInformation($"Calling API-GET for Person {name} at {DateTime.Now.ToShortTimeString()}");
 
-            var result = await Http.GetFromJsonAsync<ClientBasePerson>(StringCollection.Api_PeopleControler_Uri + $"/{name}");
+            var result = await Http.GetFromJsonAsync<ClientBasePerson>(StringCollection.Api_PeopleControler_Uri + "/GetPersonByName" + $"/{name}");
+
+            return result;
+        }
+
+        public async Task<ClientBasePerson> GetCurrentPersonById(string Id)
+        {
+            logger.LogInformation($"Calling API-GET for Person {Id} at {DateTime.Now.ToShortTimeString()}");
+
+            var result = await Http.GetFromJsonAsync<ClientBasePerson>(StringCollection.Api_PeopleControler_Uri + "/GetPersonById" + $"/{Id}");
 
             return result;
         }

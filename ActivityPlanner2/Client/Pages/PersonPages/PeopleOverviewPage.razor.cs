@@ -25,5 +25,10 @@ namespace ActivityPlanner2.Client.Pages
             LoadedUsers = await Http.GetListOfPeople();
             StateHasChanged();
         }
+
+        protected void RedirectToDetails(string Id)
+        {
+            NavManager.NavigateTo($"/Person/Detail/{Id}");
+        }
     }
 }

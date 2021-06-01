@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ActivityPlanner2.Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class PeopleController : ControllerBase
     {
@@ -24,6 +24,7 @@ namespace ActivityPlanner2.Server.Controllers
 
         // GET: api/<PeopleController>
         [HttpGet]
+        [ActionName("GetAllPeople")]
         public async Task<ActionResult<IEnumerable<BasePersonDTO>>> GetListOfPeople()
         {
             var result = await context.GetListOfPeople();
@@ -40,9 +41,26 @@ namespace ActivityPlanner2.Server.Controllers
 
         // GET api/<PeopleController>/5
         [HttpGet("{userName}")]
+        [ActionName("GetPersonByName")]
         public async Task<ActionResult<BasePersonDTO>> GetPersonByName(string userName)
         {
             var result = await context.GetPersonByUserName(userName);
+
+            if (result == null)
+            {
+                return NotFound();
+
+            }
+
+            return Ok((BasePersonDTO)result);
+        }
+
+        // GET api/<PeopleController>/5
+        [HttpGet("{Id}")]
+        [ActionName("GetPersonById")]
+        public async Task<ActionResult<BasePersonDTO>> GetPersonById(string Id)
+        {
+            var result = await context.GetPersonById(Id);
 
             if (result == null)
             {
