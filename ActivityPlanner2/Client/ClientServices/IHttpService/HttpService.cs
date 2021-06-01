@@ -93,6 +93,22 @@ namespace ActivityPlanner2.Client.ClientServices
             return activityList;
         }
 
+        public async Task<IEnumerable<ClientActivity>> GetlistOfOrganizedActivitiesByPerson(string userId)
+        {
+            logger.LogInformation($"Calling API-PUT for Person {userId} at {DateTime.Now.ToShortTimeString()}");
+
+            var result = await Http.GetFromJsonAsync<IEnumerable<ActivityDTO>>($"api/Organized/{userId}");
+
+            List<ClientActivity> activityList = new List<ClientActivity>();
+
+            foreach (var activity in result)
+            {
+                activityList.Add((ClientActivity)activity);
+            }
+
+            return activityList;
+        }
+
         public void Dispose()
         {
             ((IDisposable)Http).Dispose();

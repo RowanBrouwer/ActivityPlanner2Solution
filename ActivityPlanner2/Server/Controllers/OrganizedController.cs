@@ -16,16 +16,17 @@ namespace ActivityPlanner2.Server.Controllers
     public class OrganizedController : ControllerBase
     {
         IActivityRepository activityContext;
-        IPersonOrganizedActivityRepository OrganizedContext;
+        IPersonOrganizedActivityRepository organizedContext;
         public OrganizedController(IActivityRepository activityContext, IPersonOrganizedActivityRepository organizedContext)
         {
             this.activityContext = activityContext;
-            this.OrganizedContext = organizedContext;
+            this.organizedContext = organizedContext;
         }
+
         // GET: api/<InvitedController>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Activity>>> Get()
-{
+        public async Task<ActionResult<IEnumerable<ActivityDTO>>> Get()
+        {
             var result = await activityContext.GetListOfActivities();
 
             if (result == null)
@@ -33,18 +34,46 @@ namespace ActivityPlanner2.Server.Controllers
                 return NotFound();
             }
 
-            return Ok(result);
+            try
+            {
+                var castResult = new List<ActivityDTO>();
+
+                foreach (var activity in result)
+                {
+                    castResult.Add((ActivityDTO)activity);
+                }
+            }
+            catch (InvalidCastException ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            return Ok();
         }
 
         // GET api/<InvitedController>/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<Activity>>> Get(string id)
-{
-            var result = await activityContext.GetListOfOrganizedActivitiesByPersonId(id);
+        [HttpGet("{userId}")]
+        public async Task<ActionResult<IEnumerable<ActivityDTO>>> Get(string userId)
+        {
+            var result = await activityContext.GetListOfOrganizedActivitiesByPersonId(userId);
 
             if (result == null)
             {
                 return NotFound();
+            }
+
+            try
+            {
+                var castResult = new List<ActivityDTO>();
+
+                foreach (var activity in result)
+                {
+                    castResult.Add((ActivityDTO)activity);
+                }
+            }
+            catch (InvalidCastException ex)
+            {
+                Console.WriteLine(ex);
             }
 
             return Ok(result);
@@ -54,7 +83,7 @@ namespace ActivityPlanner2.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(PersonInvitesDTO DTO)
         {
-            Task deleteTask = OrganizedContext.DeleteOrganizedActivitiesByPersonIdAndActivityId(DTO.PersonId, DTO.ActivityId);
+            Task deleteTask = organizedContext.DeleteOrganizedActivitiesByPersonIdAndActivityId(DTO.PersonId, DTO.ActivityId);
             await deleteTask;
 
             if (deleteTask.IsCanceled || deleteTask.IsFaulted)

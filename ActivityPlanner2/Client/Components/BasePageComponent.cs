@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using System;
 using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
 
 namespace ActivityPlanner2.Client.Components
 {
@@ -16,5 +17,11 @@ namespace ActivityPlanner2.Client.Components
         [Inject]
         protected AuthenticationStateProvider AuthenticationStateProvider { get; set; }
         protected ClientBasePerson CurrentUser { get; set; }
+        protected async Task SetCurrentUser()
+        {
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var authUser = authState.User;
+            CurrentUser = await Http.GetCurrentPersonByUserName(authUser.Identity.Name);
+        }
     }
 }

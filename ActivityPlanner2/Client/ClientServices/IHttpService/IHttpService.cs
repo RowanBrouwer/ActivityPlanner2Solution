@@ -12,6 +12,7 @@ namespace ActivityPlanner2.Client.ClientServices
     {
         public Task<IEnumerable<ClientBasePerson>> GetListOfPeople();
         public Task<IEnumerable<ClientActivity>> GetlistOfInvitedActivitiesByPerson(string id);
+        public Task<IEnumerable<ClientActivity>> GetlistOfOrganizedActivitiesByPerson(string id);
         public Task<IEnumerable<ClientActivity>> GetlistOfActivities();
         public Task<ClientBasePerson> GetCurrentPersonByUserName(string name);
         public Task<HttpResponseMessage> AddPerson(ClientBasePerson person);
