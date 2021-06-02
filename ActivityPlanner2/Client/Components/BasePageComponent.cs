@@ -21,7 +21,7 @@ namespace ActivityPlanner2.Client.Components
         {
             var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
             var authUser = authState.User;
-            CurrentUser = await Http.GetCurrentPersonByUserName(authUser.Identity.Name);
+            CurrentUser = await Http.GetPersonByUserName(authUser.Identity.Name);
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ActivityPlanner2.Client.Pages.PersonPages
+namespace ActivityPlanner2.Client.Pages
 {
     [Authorize]
     public class PersonDetailPageModel : BasePageComponent
@@ -20,12 +20,17 @@ namespace ActivityPlanner2.Client.Pages.PersonPages
 
             if (!(string.IsNullOrEmpty(Id) && Id == CurrentUser.Id))
             {
-                PersonDetails = await Http.GetCurrentPersonById(Id);
+                PersonDetails = await Http.GetPersonById(Id);
             }
             else
             {
-                PersonDetails = CurrentUser;
+                PersonDetails = await Http.GetPersonById(CurrentUser.Id);
             }            
+        }
+
+        protected void RedirectToEdit(string Id)
+        {
+            NavManager.NavigateTo($"/Person/Edit/{Id}");
         }
     }
 }

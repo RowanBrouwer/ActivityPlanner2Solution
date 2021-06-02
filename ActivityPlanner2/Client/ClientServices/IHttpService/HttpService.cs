@@ -33,7 +33,7 @@ namespace ActivityPlanner2.Client.ClientServices
             return result;
         }
 
-        public async Task<ClientBasePerson> GetCurrentPersonByUserName(string name)
+        public async Task<ClientBasePerson> GetPersonByUserName(string name)
         {
             logger.LogInformation($"Calling API-GET for Person {name} at {DateTime.Now.ToShortTimeString()}");
 
@@ -42,7 +42,7 @@ namespace ActivityPlanner2.Client.ClientServices
             return result;
         }
 
-        public async Task<ClientBasePerson> GetCurrentPersonById(string Id)
+        public async Task<ClientBasePerson> GetPersonById(string Id)
         {
             logger.LogInformation($"Calling API-GET for Person {Id} at {DateTime.Now.ToShortTimeString()}");
 
@@ -55,16 +55,18 @@ namespace ActivityPlanner2.Client.ClientServices
         {
             logger.LogInformation($"Calling API-POST for Person {person.Id} at {DateTime.Now.ToShortTimeString()}");
 
-            var result = await Http.PostAsJsonAsync(StringCollection.Api_PeopleControler_Uri, person);
+            var result = await Http.PostAsJsonAsync(StringCollection.Api_PeopleControler_Uri + "/AddPerson", person);
 
             return result;
         }
 
-        public async Task<HttpResponseMessage> UpdateVisitor(ClientBasePerson person)
+        public async Task<HttpResponseMessage> UpdatePerson(ClientBasePerson person)
         {
             logger.LogInformation($"Calling API-PUT for Person {person.Id} at {DateTime.Now.ToShortTimeString()}");
 
-            var result = await Http.PutAsJsonAsync(StringCollection.Api_PeopleControler_Uri + $"/{person.Id}", person);
+            BasePersonDTO dto = (BasePersonDTO)person;
+
+            var result = await Http.PutAsJsonAsync(StringCollection.Api_PeopleControler_Uri + "/UpdatePerson" + $"/{dto.Id}", dto);
 
             return result;
         }

@@ -19,21 +19,24 @@
             Last name
         </div>
     </div>
-    @if (CurrentUser != null)
+    @if (PersonDetails != null)
     {
         <div class="row">
             <div class="col border border-dark col-4">
-                @CurrentUser.Id
+                @PersonDetails.Id
             </div>
             <div class="col border border-dark col-2">
-                @CurrentUser.FirstName
+                @PersonDetails.FirstName
             </div>
             <div class="col border border-dark col-2">
-                @CurrentUser.MiddleName
+                @PersonDetails.MiddleName
             </div>
             <div class="col border border-dark col-2">
-                @CurrentUser.LastName
+                @PersonDetails.LastName
             </div>
+            <button class="col border border-dark col-2" @onclick="@(() => RedirectToEdit(PersonDetails.Id))">
+                Edit
+            </button>
 
         </div>
 

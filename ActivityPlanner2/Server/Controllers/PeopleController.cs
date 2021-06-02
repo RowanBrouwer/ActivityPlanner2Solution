@@ -73,6 +73,7 @@ namespace ActivityPlanner2.Server.Controllers
 
         // POST api/<PeopleController>
         [HttpPost]
+        [ActionName("AddPerson")]
         public async Task<ActionResult<BasePersonDTO>> Post([FromBody] BasePersonDTO value)
         {
             var check = await context.GetPersonById(value.Id);
@@ -96,6 +97,7 @@ namespace ActivityPlanner2.Server.Controllers
 
         // PUT api/<PeopleController>/5
         [HttpPut("{id}")]
+        [ActionName("UpdatePerson")]
         public async Task<ActionResult<BasePersonDTO>> Put(string id, [FromBody] BasePersonDTO value)
         {
             var check = await context.GetPersonById(id);
@@ -119,6 +121,7 @@ namespace ActivityPlanner2.Server.Controllers
 
         // DELETE api/<PeopleController>/5
         [HttpDelete("{id}")]
+        [ActionName("DeletePerson")]
         public async Task<ActionResult> Delete(string id)
         {
             var check = await context.GetPersonById(id);

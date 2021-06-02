@@ -1,0 +1,23 @@
+﻿@page "/Person/Edit/{Id}"
+@inherits PersonEditPageModel
+
+<h3>Edit</h3>
+
+@if (person != null)
+{
+    <div>
+        @person.Id
+    </div>
+    <div>
+        <input @bind-value="@person.FirstName">
+    </div>
+    <div>
+        <input @bind-value="@person.MiddleName">
+    </div>
+    <div>
+        <input @bind-value="@person.LastName">
+    </div>
+    <button class="col border border-dark col-2" @onclick="@(() => CallSaveChanges(person))">
+        Edit
+    </button>
+}

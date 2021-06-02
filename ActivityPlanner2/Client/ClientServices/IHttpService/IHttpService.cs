@@ -14,10 +14,10 @@ namespace ActivityPlanner2.Client.ClientServices
         public Task<IEnumerable<ClientActivity>> GetlistOfInvitedActivitiesByPerson(string id);
         public Task<IEnumerable<ClientActivity>> GetlistOfOrganizedActivitiesByPerson(string id);
         public Task<IEnumerable<ClientActivity>> GetlistOfActivities();
-        public Task<ClientBasePerson> GetCurrentPersonByUserName(string name);
-        public Task<ClientBasePerson> GetCurrentPersonById(string Id);
+        public Task<ClientBasePerson> GetPersonByUserName(string name);
+        public Task<ClientBasePerson> GetPersonById(string Id);
         public Task<HttpResponseMessage> AddPerson(ClientBasePerson person);
-        public Task<HttpResponseMessage> UpdateVisitor(ClientBasePerson person);
+        public Task<HttpResponseMessage> UpdatePerson(ClientBasePerson person);
         public void Dispose();
     }
 }
