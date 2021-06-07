@@ -157,5 +157,16 @@ namespace ActivityPlanner2.Client.ClientServices
         {
             ((IDisposable)Http).Dispose();
         }
+
+        public async Task<ClientActivity> GetActivityById(int id)
+        {
+            logger.LogInformation($"Calling API-GET for ACTIVITY - {id} at {DateTime.Now.ToShortTimeString()}");
+
+            var result = await Http.GetFromJsonAsync<ActivityDTO>($"api/Activity/GetActivityById/{id}");
+
+            var castresult = (ClientActivity)result;
+
+            return castresult;
+        }
     }
 }
