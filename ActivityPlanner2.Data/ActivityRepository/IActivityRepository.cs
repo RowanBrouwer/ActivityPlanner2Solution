@@ -20,5 +20,7 @@ namespace ActivityPlanner2.Data
         Task DeleteActivity(int Id);
         Task UpdateActivityFromDTO(int id, ActivityDTO value);
         Task UpdateActivityFromActivity(Activity activity);
+        Task<IEnumerable<Person>> GetInvitesdByActivityId(int id);
+        Task<IEnumerable<Person>> GetOrganizersByActivityid(int id);
     }
 }

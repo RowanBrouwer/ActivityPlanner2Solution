@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using ActivityPlanner2;
 using ActivityPlanner2.Client.ClientModels;
 using ActivityPlanner2.Shared.DTOs;
+using System.Diagnostics;
 
 namespace ActivityPlanner2.Client.ClientServices
 {
@@ -92,7 +93,7 @@ namespace ActivityPlanner2.Client.ClientServices
         {
             logger.LogInformation($"Calling API-GET for Activity List at {DateTime.Now.ToShortTimeString()}");
 
-            var result = await Http.GetFromJsonAsync<IEnumerable<ActivityDTO>>("api/Activity");
+            var result = await Http.GetFromJsonAsync<IEnumerable<ActivityDTO>>("api/Activity/GetAllActivitys");
 
             List<ClientActivity> activityList = new List<ClientActivity>();
 
@@ -106,7 +107,7 @@ namespace ActivityPlanner2.Client.ClientServices
 
         public async Task<IEnumerable<ClientActivity>> GetlistOfOrganizedActivitiesByPerson(string userId)
         {
-            logger.LogInformation($"Calling API-PUT for Person {userId} at {DateTime.Now.ToShortTimeString()}");
+            logger.LogInformation($"Calling API-GET for Person {userId} at {DateTime.Now.ToShortTimeString()}");
 
             var result = await Http.GetFromJsonAsync<IEnumerable<ActivityDTO>>($"api/Organized/{userId}");
 
@@ -118,6 +119,38 @@ namespace ActivityPlanner2.Client.ClientServices
             }
 
             return activityList;
+        }
+
+        public async Task<IEnumerable<ClientBasePerson>> GetListOfInvitesByActivtyId(int id)
+        {
+            logger.LogInformation($"Calling API-GET for INVITES of ACTIVITY - {id} at {DateTime.Now.ToShortTimeString()}");
+
+            var result = await Http.GetFromJsonAsync<IEnumerable<BasePersonDTO>>($"api/Activity/GetInvitedPeopleByActivityId/{id}");
+
+            List<ClientBasePerson> InviteList = new List<ClientBasePerson>();
+
+            foreach (var person in result)
+            {
+                InviteList.Add((ClientBasePerson)person);
+            }
+
+            return InviteList;
+        }
+
+        public async Task<IEnumerable<ClientBasePerson>> GetListOfOrganizersByActivtyId(int id)
+        {
+            logger.LogInformation($"Calling API-GET for ORGANIZERS of ACTIVITY - {id} at {DateTime.Now.ToShortTimeString()}");
+
+            var result = await Http.GetFromJsonAsync<IEnumerable<BasePersonDTO>>($"api/Activity/GetOrganizersByActivityId/{id}");
+
+            List<ClientBasePerson> OrganizerList = new List<ClientBasePerson>();
+
+            foreach (var person in result)
+            {
+                OrganizerList.Add((ClientBasePerson)person);
+            }
+
+            return OrganizerList;
         }
 
         public void Dispose()

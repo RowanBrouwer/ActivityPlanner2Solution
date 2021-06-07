@@ -11,6 +11,8 @@ namespace ActivityPlanner2.Client.ClientServices
     public interface IHttpService
     {
         public Task<IEnumerable<ClientBasePerson>> GetListOfPeople();
+        public Task<IEnumerable<ClientBasePerson>> GetListOfInvitesByActivtyId(int id);
+        public Task<IEnumerable<ClientBasePerson>> GetListOfOrganizersByActivtyId(int id);
         public Task<IEnumerable<ClientActivity>> GetlistOfInvitedActivitiesByPerson(string id);
         public Task<IEnumerable<ClientActivity>> GetlistOfOrganizedActivitiesByPerson(string id);
         public Task<IEnumerable<ClientActivity>> GetlistOfActivities();

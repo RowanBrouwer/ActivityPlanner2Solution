@@ -190,5 +190,17 @@ namespace ActivityPlanner2.Data
 
             return InvitedPeople;
         }
+
+        public async Task<IEnumerable<Person>> GetInvitesdByActivityId(int id)
+        {
+            var result = context.People.Where(p => p.Invites.Any(a => a.ActivityId == id));
+            return await Task.FromResult(result);
+        }
+
+        public async Task<IEnumerable<Person>> GetOrganizersByActivityid(int id)
+        {
+            var result = context.People.Where(p => p.OrganizedActivities.Any(a => a.OrganizedActivityId == id));
+            return await Task.FromResult(result);
+        }
     }
 }

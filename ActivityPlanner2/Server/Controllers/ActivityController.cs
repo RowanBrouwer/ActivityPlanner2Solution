@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ActivityPlanner2.Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class ActivityController : ControllerBase
     {
@@ -27,6 +27,7 @@ namespace ActivityPlanner2.Server.Controllers
 
         // GET: api/<ActivityController>
         [HttpGet]
+        [ActionName("GetAllActivitys")]
         public async Task<ActionResult<IEnumerable<ActivityDTO>>> Get()
         {
             var result = await activityContext.GetListOfActivities();
@@ -55,6 +56,7 @@ namespace ActivityPlanner2.Server.Controllers
 
         // GET api/<ActivityController>/5
         [HttpGet("{id}")]
+        [ActionName("GetActivityById")]
         public async Task<ActionResult<ActivityDTO>> Get(int id)
         {
             var result = await activityContext.GetActivityById(id);
@@ -76,8 +78,55 @@ namespace ActivityPlanner2.Server.Controllers
             }
         }
 
+        [HttpGet("{id}")]
+        [ActionName("GetInvitedPeopleByActivityId")]
+        public async Task<ActionResult<BasePersonDTO>> GetInvitedPeopleByActivityId(int id)
+        {
+            var result = await activityContext.GetInvitesdByActivityId(id);
+
+            if (result == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                BasePersonDTO castResult = (BasePersonDTO)result;
+
+                return Ok(castResult);
+            }
+            catch (InvalidCastException ex)
+            {
+                return NotFound(ex);
+            }
+        }
+
+        [HttpGet("{id}")]
+        [ActionName("GetOrganizersByActivityId")]
+        public async Task<ActionResult<BasePersonDTO>> GetOrganizersByActivityId(int id)
+        {
+            var result = await activityContext.GetOrganizersByActivityid(id);
+
+            if (result == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                BasePersonDTO castResult = (BasePersonDTO)result;
+
+                return Ok(castResult);
+            }
+            catch (InvalidCastException ex)
+            {
+                return NotFound(ex);
+            }
+        }
+
         // POST api/<ActivityController>
         [HttpPost]
+        [ActionName("PostActivity")]
         public async Task<ActionResult> Post([FromBody] ActivityDTO value)
         {
             Activity ActivityToAdd = new();
@@ -96,6 +145,7 @@ namespace ActivityPlanner2.Server.Controllers
 
         // PUT api/<ActivityController>/5
         [HttpPut("{id}")]
+        [ActionName("PutActivity")]
         public async Task<ActionResult> Put(int id, [FromBody] ActivityDTO value)
         {
             Activity savedActivity = await activityContext.GetActivityById(id);
@@ -112,6 +162,7 @@ namespace ActivityPlanner2.Server.Controllers
 
         // DELETE api/<ActivityController>/5
         [HttpDelete("{id}")]
+        [ActionName("Delete")]
         public ActionResult Delete(int id)
         {
             activityContext.DeleteActivity(id);
